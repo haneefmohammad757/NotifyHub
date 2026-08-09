@@ -45,14 +45,17 @@ export default function AdminLayout() {
       {/* Mobile header */}
       <header className="admin-mobile-header" role="banner">
         <Logo to="/admin" inverse />
-        <button
-          className="admin-mobile-toggle"
-          onClick={toggleSidebar}
-          aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
-          aria-expanded={sidebarOpen}
-        >
-          {sidebarOpen ? <IconClose /> : <IconMenu />}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="admin-topbar__avatar" style={{ flexShrink: 0 }}>{adminName.charAt(0)}</div>
+          <button
+            className="admin-mobile-toggle"
+            onClick={toggleSidebar}
+            aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={sidebarOpen}
+          >
+            {sidebarOpen ? <IconClose /> : <IconMenu />}
+          </button>
+        </div>
       </header>
 
       {/* Overlay */}
@@ -74,7 +77,7 @@ export default function AdminLayout() {
           <Logo to="/admin" inverse />
         </div>
 
-        <nav className="admin-sidebar__nav">
+        <nav className="admin-sidebar__nav" onClick={closeSidebar}>
           <span className="admin-sidebar__section-label">Menu</span>
           {adminNavItems.map((item) => (
             <NavItem key={item.to} {...item} />

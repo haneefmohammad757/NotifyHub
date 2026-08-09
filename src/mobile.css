@@ -1,0 +1,497 @@
+/* ============================================
+   NotifyHub — Mobile Responsiveness
+   Comprehensive media queries for all screens
+   ============================================ */
+
+/* ─── Auth Page ────────────────────────────── */
+@media (max-width: 768px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .auth-hero {
+    display: none;
+  }
+
+  .auth-panel {
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-panel__card {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-panel__title {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-panel {
+    padding: 1.25rem 1rem;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+
+  .auth-panel__card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 16px;
+  }
+
+  .auth-panel__title {
+    font-size: 1.4rem;
+  }
+
+  .auth-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auth-modal-actions {
+    flex-direction: column;
+  }
+}
+
+/* ─── Admin Layout Mobile ───────────────────── */
+@media (max-width: 1024px) {
+  .admin-topbar__profile .admin-topbar__info {
+    display: none;
+  }
+
+  .admin-topbar {
+    padding: 0 var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-main {
+    padding: var(--space-4) var(--space-3) !important;
+  }
+
+  .admin-topbar__title {
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+  }
+}
+
+/* ─── Admin Overview ────────────────────────── */
+@media (max-width: 640px) {
+  .admin-overview__welcome {
+    padding: var(--space-5) var(--space-4) !important;
+    min-height: 100px;
+  }
+
+  .admin-overview__welcome h2 {
+    font-size: var(--text-lg) !important;
+  }
+
+  .admin-overview__welcome p {
+    font-size: var(--text-xs);
+  }
+
+  .admin-stat-card {
+    padding: var(--space-4);
+  }
+
+  .admin-stat-card__value {
+    font-size: 2rem;
+  }
+
+  .admin-overview__stats {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--space-3);
+  }
+
+  .admin-stat-card__label {
+    font-size: 0.65rem;
+  }
+
+  .admin-quick-action {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .admin-quick-action__icon {
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .admin-overview__stats {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* ─── Admin Announcements / Events Table ────── */
+@media (max-width: 768px) {
+  .admin-announcements__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .admin-announcements__header .admin-btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-table {
+    table-layout: auto;
+    min-width: 600px;
+  }
+
+  .admin-modal {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: var(--radius-md);
+  }
+
+  .admin-modal__header {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .admin-form {
+    padding: 1.25rem;
+  }
+
+  .admin-modal__footer {
+    padding: 1rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-modal__footer {
+    flex-direction: column-reverse;
+  }
+
+  .admin-modal__footer .admin-btn-primary,
+  .admin-modal__footer .admin-btn-secondary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ─── Admin Queries ─────────────────────────── */
+@media (max-width: 768px) {
+  .admin-queries__header {
+    padding: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .admin-queries__table th,
+  .admin-queries__table td {
+    padding: 0.875rem 1rem;
+    font-size: var(--text-xs);
+  }
+
+  .admin-queries__detail-body {
+    flex-direction: column;
+  }
+}
+
+/* ─── Admin Activity ────────────────────────── */
+@media (max-width: 640px) {
+  .activity-timeline::before {
+    left: 12px;
+  }
+
+  .activity-item {
+    padding-left: 2rem;
+  }
+
+  .activity-dot {
+    left: 6px;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* ─── Admin Settings ────────────────────────── */
+@media (max-width: 640px) {
+  .settings-section {
+    padding: 1.25rem !important;
+  }
+
+  .settings-form-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── Student Home ──────────────────────────── */
+@media (max-width: 768px) {
+  .campus-pulse {
+    padding: var(--space-8) var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+
+  .campus-pulse__title {
+    font-size: var(--text-2xl);
+  }
+
+  .campus-pulse__subtitle {
+    font-size: var(--text-sm);
+  }
+
+  .search-entry {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .search-entry__discover {
+    width: 100%;
+    justify-content: center;
+    flex-shrink: unset;
+  }
+
+  .status-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  .status-card {
+    padding: var(--space-4);
+  }
+
+  .status-card__value {
+    font-size: var(--text-xl);
+  }
+
+  .events-list {
+    grid-template-columns: 1fr;
+  }
+
+  .feed-item {
+    padding: var(--space-4) var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .feed-item__action {
+    display: none;
+  }
+
+  .urgent-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .urgent-banner__action {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .campus-pulse {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .campus-pulse__title {
+    font-size: var(--text-xl);
+  }
+
+  .status-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .status-card {
+    padding: var(--space-3) var(--space-3);
+  }
+
+  .status-card__label {
+    font-size: 0.65rem;
+  }
+
+  .status-card__value {
+    font-size: var(--text-lg);
+  }
+
+  .feed-item__title {
+    font-size: var(--text-base);
+  }
+
+  .search-entry__bar {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* ─── Student Calendar ──────────────────────── */
+@media (max-width: 480px) {
+  .calendar-title {
+    font-size: var(--text-xl);
+  }
+
+  .calendar-controls {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .calendar-nav .btn--secondary {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+
+  .calendar-current-month {
+    font-size: var(--text-base);
+  }
+}
+
+/* ─── Student Queries ───────────────────────── */
+@media (max-width: 768px) {
+  .student-queries__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .student-queries__form-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .query-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-queries__form-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .student-queries__title {
+    font-size: var(--text-xl);
+  }
+
+  .query-card {
+    padding: 1rem;
+  }
+}
+
+/* ─── Student Discover ──────────────────────── */
+@media (max-width: 768px) {
+  .student-discover {
+    padding: 1.5rem 0;
+  }
+
+  .discover-title {
+    font-size: var(--text-2xl);
+  }
+
+  .discover-filter-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .discover-results-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .discover-title {
+    font-size: var(--text-xl);
+  }
+
+  .discover-search-bar {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+}
+
+/* ─── Student Header (user badge) ───────────── */
+@media (max-width: 480px) {
+  .student-user-badge {
+    display: none;
+  }
+
+  .student-logout-btn span {
+    display: none;
+  }
+
+  .student-logout-btn {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .student-header {
+    padding: 0 var(--space-3);
+  }
+}
+
+/* ─── Announcement Detail ───────────────────── */
+@media (max-width: 640px) {
+  .detail-page {
+    padding: var(--space-4) var(--space-3) !important;
+  }
+
+  .detail-page__title {
+    font-size: var(--text-xl) !important;
+  }
+
+  .detail-page__back-bar {
+    gap: var(--space-2);
+  }
+}
+
+/* ─── Announcement Modal ────────────────────── */
+@media (max-width: 480px) {
+  .student-modal {
+    padding: var(--space-3) !important;
+    align-items: flex-end !important;
+  }
+
+  .student-modal__content {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 1.5rem 1.25rem !important;
+  }
+}
+
+/* ─── AnnouncementModal & Overlay ───────────── */
+@media (max-width: 640px) {
+  .student-modal__close {
+    top: 12px !important;
+    right: 12px !important;
+  }
+}
+
+/* ─── Global table overflow ─────────────────── */
+@media (max-width: 768px) {
+  .admin-table-container {
+    border-radius: var(--radius-md);
+  }
+
+  /* Ensure tables scroll horizontally */
+  .admin-table-container,
+  .admin-queries__table-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ─── Prevent horizontal overflow on body ───── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+}
