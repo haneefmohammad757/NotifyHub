@@ -1,5 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
-
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 /**
  * Wrapper around fetch that sends credentials (cookies) and handles JSON.
  * All API calls go through this to ensure consistent cookie/credential handling.
