@@ -1,0 +1,122 @@
+/* ============================================
+   NotifyHub — Official Brand System (Ref Match)
+   ============================================ */
+
+.logo-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  user-select: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.logo-brand:hover {
+  opacity: 0.95;
+}
+
+/* --- Icon Box --- */
+.logo-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.25));
+}
+
+.logo-brand:hover .logo-icon-box {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.logo-svg {
+  display: block;
+}
+
+/* --- Text Block --- */
+.logo-text-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.logo-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1.1;
+  font-family: var(--font-heading);
+}
+
+/* "Notify" text */
+.logo-notify-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo-brand--admin .logo-notify-text,
+.logo-brand--inverse .logo-notify-text {
+  color: #FFFFFF !important;
+}
+
+/* "Hub" text with Cyan-Purple-Gold gradient */
+.logo-hub-text {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #00E5FF 0%, #8C7CFF 50%, #FBBF24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Admin tag if present */
+.admin-tag {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  text-transform: uppercase;
+  margin-left: 0.4rem;
+  align-self: center;
+}
+
+/* --- Tagline Row: CONNECT • INFORM • EMPOWER --- */
+.logo-tagline-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+.tag-connect {
+  color: #00E5FF;
+}
+
+.tag-inform {
+  color: #C084FC;
+}
+
+.tag-empower {
+  color: #FBBF24;
+}
+
+.tag-dot {
+  color: #64748B;
+  opacity: 0.7;
+  font-size: 0.5rem;
+}

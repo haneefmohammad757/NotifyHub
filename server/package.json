@@ -1,0 +1,29 @@
+{
+  "name": "notifyhub-server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx dotenv -e ../.env -- node --watch src/app.js",
+    "start": "npx dotenv -e ../.env -- node src/app.js",
+    "db:generate": "npx dotenv -e ../.env -- npx prisma generate",
+    "db:migrate": "npx dotenv -e ../.env -- npx prisma migrate dev",
+    "db:push": "npx dotenv -e ../.env -- npx prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "npx dotenv -e ../.env -- npx prisma studio"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^6.19.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0"
+  }
+}

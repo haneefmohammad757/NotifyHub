@@ -1,0 +1,166 @@
+// Prisma schema for NotifyHub
+// Neon PostgreSQL — connection via DATABASE_URL in root .env
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+enum AnnouncementCategory {
+  ACADEMIC
+  EXAM
+  PLACEMENT
+  WORKSHOP
+  EVENT
+  GENERAL
+}
+
+enum AnnouncementPriority {
+  NORMAL
+  IMPORTANT
+  URGENT
+}
+
+enum AnnouncementStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum QueryStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+// ─── Models ──────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole @default(STUDENT)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  announcements Announcement[]
+  events        Event[]
+  notifications Notification[]
+  activityLogs  ActivityLog[]
+
+  submittedQueries  Query[] @relation("StudentQueries")
+  respondedQueries  Query[] @relation("ResponderQueries")
+
+  @@map("users")
+}
+
+model Announcement {
+  id          String                @id @default(cuid())
+  title       String
+  description String
+  category    AnnouncementCategory  @default(GENERAL)
+  priority    AnnouncementPriority  @default(NORMAL)
+  status      AnnouncementStatus    @default(DRAFT)
+  deadline    DateTime?
+  publishedAt DateTime?             @map("published_at")
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+
+  attachmentUrl  String? @map("attachment_url")
+  attachmentName String? @map("attachment_name")
+  attachmentType String? @map("attachment_type")
+  attachmentSize Int?    @map("attachment_size")
+
+  createdBy   String   @map("created_by")
+  creator     User     @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+
+  @@map("announcements")
+}
+
+model Event {
+  id                   String    @id @default(cuid())
+  title                String
+  description          String
+  date                 DateTime
+  startTime            String?   @map("start_time")
+  endTime              String?   @map("end_time")
+  venue                String?
+  organizer            String?
+  registrationEnabled  Boolean   @default(false) @map("registration_enabled")
+  registrationDeadline DateTime? @map("registration_deadline")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+
+  attachmentUrl  String? @map("attachment_url")
+  attachmentName String? @map("attachment_name")
+  attachmentType String? @map("attachment_type")
+  attachmentSize Int?    @map("attachment_size")
+
+  createdBy   String   @map("created_by")
+  creator     User     @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+
+  @@map("events")
+}
+
+model Query {
+  id          String      @id @default(cuid())
+  subject     String
+  message     String
+  status      QueryStatus @default(OPEN)
+  response    String?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  respondedAt DateTime?   @map("responded_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  deletedByStudent Boolean @default(false) @map("deleted_by_student")
+  deletedByAdmin   Boolean @default(false) @map("deleted_by_admin")
+
+  studentId   String  @map("student_id")
+  student     User    @relation("StudentQueries", fields: [studentId], references: [id], onDelete: Restrict)
+
+  respondedBy String? @map("responded_by")
+  responder   User?   @relation("ResponderQueries", fields: [respondedBy], references: [id], onDelete: SetNull)
+
+  @@map("queries")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  details    String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  adminId String @map("admin_id")
+  admin   User   @relation(fields: [adminId], references: [id], onDelete: Restrict)
+
+  @@map("activity_logs")
+}

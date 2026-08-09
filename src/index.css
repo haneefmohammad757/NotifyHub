@@ -1,0 +1,340 @@
+/* ============================================
+   NotifyHub — Premium Design System Foundation
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- CSS Custom Properties --- */
+:root {
+  /* Student (Light/Premium) Theme */
+  --bg-primary: #F8F9FC;
+  --bg-secondary: #EEF0F6;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
+
+  --text-primary: #1A1D2E;
+  --text-secondary: #5A5F7A;
+  --text-tertiary: #9498B1;
+  --text-inverse: #FFFFFF;
+
+  --border: #DFE2ED;
+  --border-light: #ECEEF5;
+
+  --nav-bg: #1A1D2E;
+  --nav-text: #F0F1F5;
+  --nav-accent: #6C5CE7;
+
+  --accent: #6C5CE7;
+  --accent-hover: #5A4BD1;
+  --accent-soft: rgba(108, 92, 231, 0.08);
+
+  /* Status Colors */
+  --success: #00C48C;
+  --success-bg: rgba(0, 196, 140, 0.1);
+  --warning: #FF9F43;
+  --warning-bg: rgba(255, 159, 67, 0.1);
+  --danger: #FF5252;
+  --danger-bg: rgba(255, 82, 82, 0.08);
+
+  --urgent: #FF5252;
+  --important: #FF9F43;
+  --normal: #B0B3C7;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Layout */
+  --sidebar-width: 250px;
+  --header-height: 60px;
+  --mobile-nav-height: 60px;
+  --content-max-width: 1200px;
+
+  /* Borders & Effects */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-sm: 0 1px 3px rgba(26, 29, 46, 0.04), 0 1px 2px rgba(26, 29, 46, 0.03);
+  --shadow-md: 0 4px 14px rgba(26, 29, 46, 0.08), 0 2px 6px rgba(26, 29, 46, 0.04);
+  --shadow-lg: 0 12px 28px rgba(26, 29, 46, 0.12), 0 4px 10px rgba(26, 29, 46, 0.06);
+  --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.12);
+}
+
+/* Admin (Dark/Premium Control Center) Theme */
+.admin-theme {
+  --bg-primary: #0D1117;
+  --bg-secondary: #161B25;
+  --surface: #1C222E;
+  --surface-elevated: #252B3A;
+
+  --text-primary: #ECF0F5;
+  --text-secondary: #8B92A8;
+  --text-tertiary: #5D6478;
+  --text-inverse: #0D1117;
+
+  --border: #2A3142;
+  --border-light: #1F2636;
+
+  --nav-bg: #0D1117;
+  --nav-text: #8B92A8;
+  --nav-accent: #34D399;
+
+  --accent: #34D399;
+  --accent-hover: #2CC38A;
+  --accent-soft: rgba(52, 211, 153, 0.1);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 24px rgba(52, 211, 153, 0.12);
+}
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+/* --- Global Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-theme .btn--primary {
+  background-color: var(--accent);
+  color: #000;
+}
+
+.admin-theme .btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.admin-theme .btn--secondary {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.admin-theme .btn--secondary:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+/* --- Focus States --- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Utility Classes --- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.page-wrapper {
+  animation: fadeIn var(--transition-base) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}

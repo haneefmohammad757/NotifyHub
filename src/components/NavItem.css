@@ -1,0 +1,99 @@
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  line-height: 1;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--border-light);
+}
+
+.admin-theme .nav-link {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  gap: var(--space-3);
+}
+
+.admin-theme .nav-link:hover {
+  color: var(--nav-text);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link--active {
+  color: var(--text-primary);
+  background-color: var(--border);
+  font-weight: var(--weight-semibold);
+}
+
+.admin-theme .nav-link--active {
+  color: var(--nav-accent);
+  background-color: var(--accent-soft);
+  font-weight: var(--weight-semibold);
+}
+
+.nav-link__icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.admin-theme .nav-link__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-link--active .nav-link__icon,
+.admin-theme .nav-link--active .nav-link__icon {
+  opacity: 1;
+}
+
+.nav-link__label {
+  line-height: 1;
+}
+
+/* Bottom nav variant (mobile) */
+.nav-link--bottom {
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-1);
+  border-radius: 0;
+  background: none;
+  font-size: var(--text-xs);
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link--bottom:hover {
+  background: none;
+  color: var(--text-primary);
+}
+
+.nav-link--bottom.nav-link--active {
+  color: var(--accent);
+  background: none;
+}
+
+.nav-link--bottom.nav-link--active .nav-link__icon {
+  opacity: 1;
+}
