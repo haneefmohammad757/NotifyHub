@@ -11,10 +11,33 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 // Express App
 const app = express();
 
-// CORS
+// Trust reverse proxy (required for Render / Vercel HTTPS cookies)
+app.set('trust proxy', 1);
+
+// Allowed origins helper
+const allowedOrigins = [
+  FRONTEND_URL.replace(/\/+$/, ''),
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
+// CORS setup
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      const cleanOrigin = origin.replace(/\/+$/, '');
+      if (
+        allowedOrigins.includes(cleanOrigin) ||
+        cleanOrigin.endsWith('.vercel.app') ||
+        process.env.NODE_ENV !== 'production'
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );

@@ -1,7 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { getFileUrl } from '../services/api';
 import './AnnouncementDetail.css';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AnnouncementDetail() {
   const navigate = useNavigate();
@@ -230,13 +229,13 @@ export default function AnnouncementDetail() {
 
             {item.attachmentType?.startsWith('image/') ? (
               <img
-                src={`${API_URL}${item.attachmentUrl}`}
+                src={getFileUrl(item.attachmentUrl)}
                 alt={item.attachmentName || 'Attachment'}
                 className="detail-page__image"
               />
             ) : (
               <a
-                href={`${API_URL}${item.attachmentUrl}`}
+                href={getFileUrl(item.attachmentUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="detail-page__pdf-link"

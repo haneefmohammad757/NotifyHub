@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx dotenv -e ../.env -- node --watch src/app.js",
-    "start": "npx dotenv -e ../.env -- node src/app.js",
-    "db:generate": "npx dotenv -e ../.env -- npx prisma generate",
-    "db:migrate": "npx dotenv -e ../.env -- npx prisma migrate dev",
-    "db:push": "npx dotenv -e ../.env -- npx prisma db push",
+    "build": "npx prisma generate",
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
+    "db:push": "npx prisma db push",
     "db:seed": "node prisma/seed.js",
-    "db:studio": "npx dotenv -e ../.env -- npx prisma studio"
+    "db:studio": "npx prisma studio"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",

@@ -1,7 +1,6 @@
 import React from 'react';
+import { getFileUrl } from '../services/api';
 import './AnnouncementModal.css';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AnnouncementModal({ item, onClose }) {
   if (!item) return null;
@@ -65,13 +64,13 @@ export default function AnnouncementModal({ item, onClose }) {
           <div className="student-modal__attachment">
             {item.attachmentType?.startsWith('image/') ? (
               <img
-                src={`${API_URL}${item.attachmentUrl}`}
+                src={getFileUrl(item.attachmentUrl)}
                 alt={item.attachmentName || 'Attachment'}
                 className="student-modal__image-preview"
               />
             ) : (
               <a
-                href={`${API_URL}${item.attachmentUrl}`}
+                href={getFileUrl(item.attachmentUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="student-modal__pdf-link"

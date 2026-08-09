@@ -1,4 +1,13 @@
-const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const cleanApiUrl = rawApiUrl.replace(/\/+$/, '');
+const API_BASE = `${cleanApiUrl}/api`;
+
+export const getFileUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${cleanApiUrl}${path.startsWith('/') ? '' : '/'}${path}`;
+};
+
 /**
  * Wrapper around fetch that sends credentials (cookies) and handles JSON.
  * All API calls go through this to ensure consistent cookie/credential handling.
