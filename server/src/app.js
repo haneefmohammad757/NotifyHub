@@ -1,8 +1,13 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import apiRoutes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Configuration
 const PORT = process.env.PORT || 5000;
@@ -49,7 +54,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Uploaded files
-app.use('/uploads', express.static('uploads'));
+// Serve uploaded files — use absolute path so it works from any CWD
+const uploadsDir = path.resolve(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadsDir));
 
 // API routes
 app.use('/api', apiRoutes);
