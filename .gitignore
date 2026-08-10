@@ -31,8 +31,3 @@ dist-ssr
 # Uploads
 uploads/
 server/uploads/
-
-# Standalone backend folder (not tracked by git)
-NotifyHub-Backend/
-backend-standalone/
-
