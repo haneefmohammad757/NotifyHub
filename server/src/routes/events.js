@@ -3,27 +3,12 @@ import prisma from '../lib/prisma.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { logActivity } from '../lib/activityLogger.js';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 
 const router = Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(process.cwd(), 'uploads');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ 
-  storage,
+// Memory storage — no disk writes
+const upload = multer({
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
@@ -47,22 +32,24 @@ router.get('/', requireAuth, async (req, res, next) => {
 
     // Students only see upcoming events (or from today onwards)
     const today = new Date();
-    // Use UTC midnight to match how Prisma stores dates from input type="date"
     const startOfTodayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
 
     const where = role === 'STUDENT' ? { date: { gte: startOfTodayUTC } } : {};
 
     const events = await prisma.event.findMany({
       where,
-      orderBy: { date: 'asc' }, // Upcoming first
+      orderBy: { date: 'asc' },
       include: {
         creator: {
-          select: { name: true } // Include author name
+          select: { name: true }
         }
       }
     });
 
-    res.json(events);
+    // Strip large base64 from list response
+    const sanitized = events.map(({ attachmentData, ...rest }) => rest);
+
+    res.json(sanitized);
   } catch (err) {
     next(err);
   }
@@ -83,7 +70,9 @@ router.get('/:id', requireAuth, async (req, res, next) => {
       return res.status(404).json({ error: 'Event not found.' });
     }
 
-    res.json(event);
+    // Strip raw base64 — clients fetch file via /api/files/event/:id
+    const { attachmentData, ...safe } = event;
+    res.json(safe);
   } catch (err) {
     next(err);
   }
@@ -96,7 +85,6 @@ router.post('/', requireAuth, requireRole('ADMIN'), upload.single('attachment'),
     const { title, description, date, startTime, endTime, venue } = req.body;
 
     if (!title || !description || !date || !venue) {
-      if (req.file) fs.unlinkSync(req.file.path);
       return res.status(400).json({ error: 'Title, description, date, and venue are required.' });
     }
 
@@ -105,8 +93,7 @@ router.post('/', requireAuth, requireRole('ADMIN'), upload.single('attachment'),
       return res.status(400).json({ error: 'Invalid event date.' });
     }
 
-    // Duplicate prevention: same title, date, and venue
-    // We check within the same day since date typically has time as 00:00:00 for simple dates
+    // Duplicate prevention
     const startOfDay = new Date(eventDate);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(eventDate);
@@ -138,17 +125,19 @@ router.post('/', requireAuth, requireRole('ADMIN'), upload.single('attachment'),
     };
 
     if (req.file) {
-      data.attachmentUrl = `/uploads/${req.file.filename}`;
+      data.attachmentUrl = null;                                      // no disk path
       data.attachmentName = req.file.originalname;
       data.attachmentType = req.file.mimetype;
       data.attachmentSize = req.file.size;
+      data.attachmentData = req.file.buffer.toString('base64');      // store in DB
     }
 
     const event = await prisma.event.create({ data });
 
     await logActivity(req.user.id, 'created', 'Event', event.id, event.title);
 
-    res.status(201).json(event);
+    const { attachmentData: _data, ...safe } = event;
+    res.status(201).json(safe);
   } catch (err) {
     next(err);
   }
@@ -162,7 +151,6 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), upload.single('attachment'
     const { title, description, date, startTime, endTime, venue, removeAttachment } = req.body;
 
     if (!title || !description || !date || !venue) {
-      if (req.file) fs.unlinkSync(req.file.path);
       return res.status(400).json({ error: 'Title, description, date, and venue are required.' });
     }
     
@@ -186,15 +174,17 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), upload.single('attachment'
     };
 
     if (req.file) {
-      data.attachmentUrl = `/uploads/${req.file.filename}`;
+      data.attachmentUrl = null;
       data.attachmentName = req.file.originalname;
       data.attachmentType = req.file.mimetype;
       data.attachmentSize = req.file.size;
+      data.attachmentData = req.file.buffer.toString('base64');
     } else if (removeAttachment === 'true') {
       data.attachmentUrl = null;
       data.attachmentName = null;
       data.attachmentType = null;
       data.attachmentSize = null;
+      data.attachmentData = null;
     }
 
     const updated = await prisma.event.update({
@@ -204,7 +194,8 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), upload.single('attachment'
 
     await logActivity(req.user.id, 'updated', 'Event', updated.id, updated.title);
 
-    res.json(updated);
+    const { attachmentData: _data, ...safe } = updated;
+    res.json(safe);
   } catch (err) {
     next(err);
   }
@@ -221,7 +212,6 @@ router.delete('/:id', requireAuth, requireRole('ADMIN'), async (req, res, next) 
       return res.status(404).json({ error: 'Event not found.' });
     }
 
-    // Hard delete since there is no status field for events
     await prisma.event.delete({
       where: { id }
     });

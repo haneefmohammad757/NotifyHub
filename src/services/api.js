@@ -9,6 +9,17 @@ export const getFileUrl = (path) => {
 };
 
 /**
+ * Returns the URL to fetch an attachment stored in the database.
+ * item._type = 'event' for events, anything else = announcement.
+ */
+export const getAttachmentUrl = (item) => {
+  if (!item?.id || !item?.attachmentName) return '';
+  const type = item._type === 'event' || item.venue || item.startTime ? 'event' : 'announcement';
+  return `${cleanApiUrl}/api/files/${type}/${item.id}`;
+};
+
+
+/**
  * Wrapper around fetch that sends credentials (cookies) and handles JSON.
  * All API calls go through this to ensure consistent cookie/credential handling.
  */

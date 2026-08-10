@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getFileUrl } from '../services/api';
+import { getAttachmentUrl } from '../services/api';
 import './AnnouncementDetail.css';
 
 export default function AnnouncementDetail() {
@@ -229,13 +229,13 @@ export default function AnnouncementDetail() {
 
             {item.attachmentType?.startsWith('image/') ? (
               <img
-                src={getFileUrl(item.attachmentUrl)}
+                src={getAttachmentUrl(item)}
                 alt={item.attachmentName || 'Attachment'}
                 className="detail-page__image"
               />
             ) : (
               <a
-                href={getFileUrl(item.attachmentUrl)}
+                href={getAttachmentUrl(item)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="detail-page__pdf-link"

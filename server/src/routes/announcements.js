@@ -3,28 +3,12 @@ import prisma from '../lib/prisma.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { logActivity } from '../lib/activityLogger.js';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 
 const router = Router();
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(process.cwd(), 'uploads');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ 
-  storage,
+// Use memory storage — file goes into req.file.buffer (no disk writes)
+const upload = multer({
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
@@ -35,15 +19,6 @@ const upload = multer({
     }
   }
 });
-
-// Helper to delete old file
-function deleteOldFile(filename) {
-  if (!filename) return;
-  const filePath = path.join(process.cwd(), 'uploads', filename);
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-  }
-}
 
 // ─── GET /api/announcements ──────────────────────────────
 
@@ -77,7 +52,10 @@ router.get('/', requireAuth, async (req, res, next) => {
       return new Date(bDate) - new Date(aDate);
     });
 
-    res.json(sorted);
+    // Strip attachmentData (base64) from list responses — it's large and not needed here
+    const sanitized = sorted.map(({ attachmentData, ...rest }) => rest);
+
+    res.json(sanitized);
   } catch (err) {
     next(err);
   }
@@ -103,7 +81,9 @@ router.get('/:id', requireAuth, async (req, res, next) => {
       return res.status(403).json({ error: 'Access denied.' });
     }
 
-    res.json(announcement);
+    // Strip raw base64 — clients fetch file via /api/files/announcement/:id
+    const { attachmentData, ...safe } = announcement;
+    res.json(safe);
   } catch (err) {
     next(err);
   }
@@ -121,7 +101,6 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
     const { title, description, category, priority, status, deadline } = req.body;
 
     if (!title || !description || !category || !priority || !status) {
-      if (req.file) deleteOldFile(req.file.filename);
       return res.status(400).json({ error: 'Missing required fields.' });
     }
 
@@ -135,17 +114,18 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
     });
 
     if (duplicate) {
-      if (req.file) deleteOldFile(req.file.filename);
       return res.status(409).json({ error: 'A very similar announcement was posted recently.' });
     }
 
     const publishedAt = status === 'PUBLISHED' ? new Date() : null;
     
+    // Build attachment data from buffer (memory storage)
     const attachmentData = req.file ? {
-      attachmentUrl: `/uploads/${req.file.filename}`,
+      attachmentUrl: null,                                       // no disk path
       attachmentName: req.file.originalname,
       attachmentType: req.file.mimetype,
-      attachmentSize: req.file.size
+      attachmentSize: req.file.size,
+      attachmentData: req.file.buffer.toString('base64'),       // store in DB
     } : {};
 
     const announcement = await prisma.announcement.create({
@@ -181,9 +161,10 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
       }
     }
 
-    res.status(201).json(announcement);
+    // Return without raw base64
+    const { attachmentData: _data, ...safe } = announcement;
+    res.status(201).json(safe);
   } catch (err) {
-    if (req.file) deleteOldFile(req.file.filename);
     next(err);
   }
 });
@@ -201,13 +182,11 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
     const { title, description, category, priority, status, deadline, removeAttachment } = req.body;
 
     if (!title || !description || !category || !priority || !status) {
-      if (req.file) deleteOldFile(req.file.filename);
       return res.status(400).json({ error: 'Missing required fields.' });
     }
 
     const existing = await prisma.announcement.findUnique({ where: { id } });
     if (!existing) {
-      if (req.file) deleteOldFile(req.file.filename);
       return res.status(404).json({ error: 'Announcement not found.' });
     }
 
@@ -216,30 +195,24 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
       publishedAt = new Date();
     }
 
-    let attachmentData = {};
+    let attachmentFields = {};
     if (req.file) {
-      // New file uploaded, delete old one
-      if (existing.attachmentUrl) {
-        const oldFile = existing.attachmentUrl.split('/').pop();
-        deleteOldFile(oldFile);
-      }
-      attachmentData = {
-        attachmentUrl: `/uploads/${req.file.filename}`,
+      // New file uploaded — replace existing
+      attachmentFields = {
+        attachmentUrl: null,
         attachmentName: req.file.originalname,
         attachmentType: req.file.mimetype,
-        attachmentSize: req.file.size
+        attachmentSize: req.file.size,
+        attachmentData: req.file.buffer.toString('base64'),
       };
     } else if (removeAttachment === 'true') {
-      // User requested to remove existing file
-      if (existing.attachmentUrl) {
-        const oldFile = existing.attachmentUrl.split('/').pop();
-        deleteOldFile(oldFile);
-      }
-      attachmentData = {
+      // User requested removal
+      attachmentFields = {
         attachmentUrl: null,
         attachmentName: null,
         attachmentType: null,
-        attachmentSize: null
+        attachmentSize: null,
+        attachmentData: null,
       };
     }
 
@@ -253,7 +226,7 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
         status,
         deadline: deadline ? new Date(deadline) : null,
         publishedAt,
-        ...attachmentData
+        ...attachmentFields
       }
     });
 
@@ -274,9 +247,9 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
       }
     }
 
-    res.json(updated);
+    const { attachmentData: _data, ...safe } = updated;
+    res.json(safe);
   } catch (err) {
-    if (req.file) deleteOldFile(req.file.filename);
     next(err);
   }
 });

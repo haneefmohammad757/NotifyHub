@@ -79,10 +79,11 @@ model Announcement {
   createdAt   DateTime              @default(now()) @map("created_at")
   updatedAt   DateTime              @updatedAt @map("updated_at")
 
-  attachmentUrl  String? @map("attachment_url")
+  attachmentUrl  String? @map("attachment_url")   // legacy — no longer used for new uploads
   attachmentName String? @map("attachment_name")
   attachmentType String? @map("attachment_type")
   attachmentSize Int?    @map("attachment_size")
+  attachmentData String? @map("attachment_data")   // base64 file content stored in DB
 
   createdBy   String   @map("created_by")
   creator     User     @relation(fields: [createdBy], references: [id], onDelete: Restrict)
@@ -104,10 +105,11 @@ model Event {
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @updatedAt @map("updated_at")
 
-  attachmentUrl  String? @map("attachment_url")
+  attachmentUrl  String? @map("attachment_url")   // legacy — no longer used for new uploads
   attachmentName String? @map("attachment_name")
   attachmentType String? @map("attachment_type")
   attachmentSize Int?    @map("attachment_size")
+  attachmentData String? @map("attachment_data")   // base64 file content stored in DB
 
   createdBy   String   @map("created_by")
   creator     User     @relation(fields: [createdBy], references: [id], onDelete: Restrict)

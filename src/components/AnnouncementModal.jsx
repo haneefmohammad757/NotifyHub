@@ -1,5 +1,5 @@
 import React from 'react';
-import { getFileUrl } from '../services/api';
+import { getAttachmentUrl } from '../services/api';
 import './AnnouncementModal.css';
 
 export default function AnnouncementModal({ item, onClose }) {
@@ -64,13 +64,13 @@ export default function AnnouncementModal({ item, onClose }) {
           <div className="student-modal__attachment">
             {item.attachmentType?.startsWith('image/') ? (
               <img
-                src={getFileUrl(item.attachmentUrl)}
+                src={getAttachmentUrl(item)}
                 alt={item.attachmentName || 'Attachment'}
                 className="student-modal__image-preview"
               />
             ) : (
               <a
-                href={getFileUrl(item.attachmentUrl)}
+                href={getAttachmentUrl(item)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="student-modal__pdf-link"
