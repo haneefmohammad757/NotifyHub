@@ -13,9 +13,18 @@ export const getFileUrl = (path) => {
  * item._type = 'event' for events, anything else = announcement.
  */
 export const getAttachmentUrl = (item) => {
-  if (!item?.id || !item?.attachmentName) return '';
-  const type = item._type === 'event' || item.venue || item.startTime ? 'event' : 'announcement';
-  return `${cleanApiUrl}/api/files/${type}/${item.id}`;
+  if (!item) return '';
+  if (item.attachmentUrl) {
+    if (item.attachmentUrl.startsWith('http://') || item.attachmentUrl.startsWith('https://')) {
+      return item.attachmentUrl;
+    }
+    return getFileUrl(item.attachmentUrl);
+  }
+  if (item.id && (item.attachmentName || item.attachmentData)) {
+    const type = item._type === 'event' || item.venue || item.startTime ? 'event' : 'announcement';
+    return `${cleanApiUrl}/api/files/${type}/${item.id}`;
+  }
+  return '';
 };
 
 

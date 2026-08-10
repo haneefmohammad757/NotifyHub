@@ -206,7 +206,7 @@ export default function AnnouncementDetail() {
         </div>
 
         {/* Attachment */}
-        {item.attachmentUrl && (
+        {(item.attachmentUrl || item.attachmentName) && (
           <div className="detail-page__attachment">
             <h2 className="detail-page__body-label">
               <svg

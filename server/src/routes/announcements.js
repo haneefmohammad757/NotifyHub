@@ -6,7 +6,7 @@ import multer from 'multer';
 
 const router = Router();
 
-// Use memory storage — file goes into req.file.buffer (no disk writes)
+// Memory storage — no disk writes
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
@@ -52,8 +52,11 @@ router.get('/', requireAuth, async (req, res, next) => {
       return new Date(bDate) - new Date(aDate);
     });
 
-    // Strip attachmentData (base64) from list responses — it's large and not needed here
-    const sanitized = sorted.map(({ attachmentData, ...rest }) => rest);
+    // Ensure attachmentUrl is populated for announcements with attachments
+    const sanitized = sorted.map(({ attachmentData, ...rest }) => ({
+      ...rest,
+      attachmentUrl: rest.attachmentUrl || (rest.attachmentName ? `/api/files/announcement/${rest.id}` : null),
+    }));
 
     res.json(sanitized);
   } catch (err) {
@@ -83,6 +86,7 @@ router.get('/:id', requireAuth, async (req, res, next) => {
 
     // Strip raw base64 — clients fetch file via /api/files/announcement/:id
     const { attachmentData, ...safe } = announcement;
+    safe.attachmentUrl = safe.attachmentUrl || (safe.attachmentName ? `/api/files/announcement/${safe.id}` : null);
     res.json(safe);
   } catch (err) {
     next(err);
@@ -120,15 +124,14 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
     const publishedAt = status === 'PUBLISHED' ? new Date() : null;
     
     // Build attachment data from buffer (memory storage)
-    const attachmentData = req.file ? {
-      attachmentUrl: null,                                       // no disk path
+    const attachmentFields = req.file ? {
       attachmentName: req.file.originalname,
       attachmentType: req.file.mimetype,
       attachmentSize: req.file.size,
-      attachmentData: req.file.buffer.toString('base64'),       // store in DB
+      attachmentData: req.file.buffer.toString('base64'),
     } : {};
 
-    const announcement = await prisma.announcement.create({
+    let announcement = await prisma.announcement.create({
       data: {
         title,
         description,
@@ -138,9 +141,17 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
         deadline: deadline ? new Date(deadline) : null,
         publishedAt,
         createdBy: req.user.id,
-        ...attachmentData
+        ...attachmentFields
       }
     });
+
+    if (req.file) {
+      const fileUrl = `/api/files/announcement/${announcement.id}`;
+      announcement = await prisma.announcement.update({
+        where: { id: announcement.id },
+        data: { attachmentUrl: fileUrl }
+      });
+    }
 
     await logActivity(req.user.id, 'created', 'Announcement', announcement.id, title);
     if (status === 'PUBLISHED') {
@@ -199,7 +210,7 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
     if (req.file) {
       // New file uploaded — replace existing
       attachmentFields = {
-        attachmentUrl: null,
+        attachmentUrl: `/api/files/announcement/${id}`,
         attachmentName: req.file.originalname,
         attachmentType: req.file.mimetype,
         attachmentSize: req.file.size,

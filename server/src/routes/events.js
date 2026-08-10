@@ -46,8 +46,11 @@ router.get('/', requireAuth, async (req, res, next) => {
       }
     });
 
-    // Strip large base64 from list response
-    const sanitized = events.map(({ attachmentData, ...rest }) => rest);
+    // Strip large base64 from list response & ensure attachmentUrl is set
+    const sanitized = events.map(({ attachmentData, ...rest }) => ({
+      ...rest,
+      attachmentUrl: rest.attachmentUrl || (rest.attachmentName ? `/api/files/event/${rest.id}` : null),
+    }));
 
     res.json(sanitized);
   } catch (err) {
@@ -72,6 +75,7 @@ router.get('/:id', requireAuth, async (req, res, next) => {
 
     // Strip raw base64 — clients fetch file via /api/files/event/:id
     const { attachmentData, ...safe } = event;
+    safe.attachmentUrl = safe.attachmentUrl || (safe.attachmentName ? `/api/files/event/${safe.id}` : null);
     res.json(safe);
   } catch (err) {
     next(err);
@@ -125,14 +129,21 @@ router.post('/', requireAuth, requireRole('ADMIN'), upload.single('attachment'),
     };
 
     if (req.file) {
-      data.attachmentUrl = null;                                      // no disk path
       data.attachmentName = req.file.originalname;
       data.attachmentType = req.file.mimetype;
       data.attachmentSize = req.file.size;
-      data.attachmentData = req.file.buffer.toString('base64');      // store in DB
+      data.attachmentData = req.file.buffer.toString('base64');
     }
 
-    const event = await prisma.event.create({ data });
+    let event = await prisma.event.create({ data });
+
+    if (req.file) {
+      const fileUrl = `/api/files/event/${event.id}`;
+      event = await prisma.event.update({
+        where: { id: event.id },
+        data: { attachmentUrl: fileUrl }
+      });
+    }
 
     await logActivity(req.user.id, 'created', 'Event', event.id, event.title);
 
@@ -174,7 +185,7 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), upload.single('attachment'
     };
 
     if (req.file) {
-      data.attachmentUrl = null;
+      data.attachmentUrl = `/api/files/event/${id}`;
       data.attachmentName = req.file.originalname;
       data.attachmentType = req.file.mimetype;
       data.attachmentSize = req.file.size;

@@ -60,7 +60,7 @@ export default function AnnouncementModal({ item, onClose }) {
           </div>
         )}
 
-        {item.attachmentUrl && (
+        {(item.attachmentUrl || item.attachmentName) && (
           <div className="student-modal__attachment">
             {item.attachmentType?.startsWith('image/') ? (
               <img

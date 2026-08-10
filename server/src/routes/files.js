@@ -2,14 +2,37 @@
  * GET /api/files/announcement/:id
  * GET /api/files/event/:id
  *
- * Streams the stored base64 attachment directly from the database.
- * No authentication required so browsers can open files in a new tab.
+ * Streams stored attachment directly from database (base64) or fallback disk path.
+ * Public route so images and PDFs render directly in browser / new tab.
  */
 
 import { Router } from 'express';
 import prisma from '../lib/prisma.js';
+import path from 'path';
+import fs from 'fs';
 
 const router = Router();
+
+async function getAttachmentBuffer(record) {
+  if (!record) return null;
+  if (record.attachmentData) {
+    return Buffer.from(record.attachmentData, 'base64');
+  }
+  if (record.attachmentUrl && record.attachmentUrl.startsWith('/uploads/')) {
+    const cleanPath = record.attachmentUrl.replace(/^\/+/, '');
+    const pathsToTry = [
+      path.join(process.cwd(), cleanPath),
+      path.join(process.cwd(), 'server', cleanPath),
+      path.resolve(process.cwd(), '..', cleanPath),
+    ];
+    for (const p of pathsToTry) {
+      if (fs.existsSync(p)) {
+        return fs.readFileSync(p);
+      }
+    }
+  }
+  return null;
+}
 
 // ─── Announcement attachment ──────────────────────────────
 router.get('/announcement/:id', async (req, res, next) => {
@@ -18,26 +41,29 @@ router.get('/announcement/:id', async (req, res, next) => {
       where: { id: req.params.id },
       select: {
         attachmentData: true,
+        attachmentUrl: true,
         attachmentType: true,
         attachmentName: true,
       },
     });
 
-    if (!record?.attachmentData) {
-      return res.status(404).json({ error: 'File not found.' });
+    if (!record) {
+      return res.status(404).json({ error: 'Announcement not found.' });
     }
 
-    const buffer = Buffer.from(record.attachmentData, 'base64');
-    res.setHeader('Content-Type', record.attachmentType || 'application/octet-stream');
-    res.setHeader('Content-Length', buffer.length);
+    const buffer = await getAttachmentBuffer(record);
+    if (!buffer) {
+      return res.status(404).json({ error: 'File attachment not found.' });
+    }
 
-    // Inline for images, attachment for PDFs so they open in-browser
-    const disposition = record.attachmentType?.startsWith('image/')
-      ? 'inline'
-      : 'inline'; // 'inline' so PDF opens in browser tab
+    const contentType = record.attachmentType || 'application/octet-stream';
+    const filename = record.attachmentName || 'attachment';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Length', buffer.length);
     res.setHeader(
       'Content-Disposition',
-      `${disposition}; filename="${encodeURIComponent(record.attachmentName || 'file')}"`
+      `inline; filename="${encodeURIComponent(filename)}"`
     );
     res.end(buffer);
   } catch (err) {
@@ -52,25 +78,29 @@ router.get('/event/:id', async (req, res, next) => {
       where: { id: req.params.id },
       select: {
         attachmentData: true,
+        attachmentUrl: true,
         attachmentType: true,
         attachmentName: true,
       },
     });
 
-    if (!record?.attachmentData) {
-      return res.status(404).json({ error: 'File not found.' });
+    if (!record) {
+      return res.status(404).json({ error: 'Event not found.' });
     }
 
-    const buffer = Buffer.from(record.attachmentData, 'base64');
-    res.setHeader('Content-Type', record.attachmentType || 'application/octet-stream');
-    res.setHeader('Content-Length', buffer.length);
+    const buffer = await getAttachmentBuffer(record);
+    if (!buffer) {
+      return res.status(404).json({ error: 'File attachment not found.' });
+    }
 
-    const disposition = record.attachmentType?.startsWith('image/')
-      ? 'inline'
-      : 'inline';
+    const contentType = record.attachmentType || 'application/octet-stream';
+    const filename = record.attachmentName || 'attachment';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Length', buffer.length);
     res.setHeader(
       'Content-Disposition',
-      `${disposition}; filename="${encodeURIComponent(record.attachmentName || 'file')}"`
+      `inline; filename="${encodeURIComponent(filename)}"`
     );
     res.end(buffer);
   } catch (err) {
