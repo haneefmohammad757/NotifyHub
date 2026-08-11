@@ -17,7 +17,7 @@
 
 .admin-btn-primary {
   background-color: var(--accent);
-  color: #000;
+  color: #fff;
   padding: var(--space-2) var(--space-5);
   border-radius: var(--radius-full);
   border: none;
@@ -26,12 +26,12 @@
   font-weight: var(--weight-bold);
   cursor: pointer;
   transition: all var(--transition-fast);
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+  box-shadow: 0 0 10px rgba(129, 140, 248, 0.2);
 }
 
 .admin-btn-primary:hover:not(:disabled) {
   background-color: var(--accent-hover);
-  box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
   transform: translateY(-1px);
 }
 
@@ -181,7 +181,7 @@
 .admin-badge--important {
   background-color: var(--accent-soft);
   color: var(--accent);
-  border: 1px solid rgba(6, 182, 212, 0.2);
+  border: 1px solid rgba(129, 140, 248, 0.2);
 }
 
 .admin-badge--normal {
@@ -322,7 +322,7 @@
 .admin-form-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), 0 0 10px rgba(52, 211, 153, 0.2);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 10px rgba(129, 140, 248, 0.2);
 }
 
 .admin-form-textarea {

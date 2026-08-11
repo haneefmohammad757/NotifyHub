@@ -4,13 +4,17 @@ import Logo from '../components/Logo';
 import NavItem from '../components/NavItem';
 import { IconHome, IconDiscover, IconCalendar, IconQueries } from '../components/Icons';
 import NotificationDropdown from '../components/NotificationDropdown';
+import UrgentDropdown from '../components/UrgentDropdown';
 import './StudentLayout.css';
 
 const studentNavItems = [
   { to: '/student', label: 'Home', icon: <IconHome />, end: true },
-  { to: '/student/discover', label: 'Discover', icon: <IconDiscover /> },
+  { to: '/student/discover', label: 'Announcements', icon: <IconDiscover /> },
   { to: '/student/calendar', label: 'Calendar', icon: <IconCalendar /> },
-  { to: '/student/queries', label: 'Queries', icon: <IconQueries /> },
+];
+
+const studentNavItemsAfterUrgent = [
+  { to: '/student/queries', label: 'Q&A', icon: <IconQueries /> },
 ];
 
 export default function StudentLayout() {
@@ -24,6 +28,13 @@ export default function StudentLayout() {
             <Logo to="/student" />
             <nav className="student-nav-desktop" aria-label="Student navigation">
               {studentNavItems.map((item) => (
+                <NavItem key={item.to} {...item} />
+              ))}
+              
+              {/* Long Urgent Notification Button placed between Calendar and Q&A */}
+              <UrgentDropdown isLongButton={true} />
+
+              {studentNavItemsAfterUrgent.map((item) => (
                 <NavItem key={item.to} {...item} />
               ))}
             </nav>
@@ -53,9 +64,10 @@ export default function StudentLayout() {
       </main>
 
       <nav className="student-nav-mobile" aria-label="Student navigation">
-        {studentNavItems.map((item) => (
-          <NavItem key={item.to} {...item} variant="bottom" />
-        ))}
+        <NavItem to="/student" label="Home" icon={<IconHome />} end={true} variant="bottom" />
+        <NavItem to="/student/discover" label="Announcements" icon={<IconDiscover />} variant="bottom" />
+        <NavItem to="/student/calendar" label="Calendar" icon={<IconCalendar />} variant="bottom" />
+        <NavItem to="/student/queries" label="Q&A" icon={<IconQueries />} variant="bottom" />
       </nav>
     </div>
   );

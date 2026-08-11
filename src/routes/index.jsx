@@ -12,14 +12,11 @@ import NotFound from '../pages/NotFound';
 import StudentHome from '../pages/StudentHome';
 import StudentDiscover from '../pages/StudentDiscover';
 import StudentCalendar from '../pages/StudentCalendar';
-import PlaceholderPage from '../pages/PlaceholderPage';
 import AdminOverview from '../pages/AdminOverview';
-
 import AdminAnnouncements from '../pages/AdminAnnouncements';
 import AdminEvents from '../pages/AdminEvents';
 import AdminQueries from '../pages/AdminQueries';
 import AdminActivity from '../pages/AdminActivity';
-import AdminSettings from '../pages/AdminSettings';
 import StudentQueries from '../pages/StudentQueries';
 import AnnouncementDetail from '../pages/AnnouncementDetail';
 
@@ -117,7 +114,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'settings',
-            element: <AdminSettings />,
+            element: <Navigate to="/admin" replace />,
           },
         ],
       },

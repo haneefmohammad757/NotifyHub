@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
-import { Outlet, useLocation, Link } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Logo from '../components/Logo';
 import NavItem from '../components/NavItem';
-import { IconMenu, IconClose, IconOverview, IconAnnouncement, IconEvent, IconQueries, IconActivity, IconSettings } from '../components/Icons';
+import { IconMenu, IconClose, IconOverview, IconAnnouncement, IconEvent, IconQueries, IconActivity } from '../components/Icons';
 import './AdminLayout.css';
 
 const adminNavItems = [
@@ -11,17 +11,23 @@ const adminNavItems = [
   { to: '/admin/announcements', label: 'Announcements', icon: <IconAnnouncement /> },
   { to: '/admin/events', label: 'Events', icon: <IconEvent /> },
   { to: '/admin/queries', label: 'Queries', icon: <IconQueries /> },
-  { to: '/admin/activity', label: 'Activity', icon: <IconActivity /> },
-];
-
-const adminSecondaryItems = [
-  { to: '/admin/settings', label: 'Settings', icon: <IconSettings /> },
+  { to: '/admin/activity', label: 'Activity Log', icon: <IconActivity /> },
 ];
 
 /** Map route paths to human-readable page titles for the topbar */
 function getPageTitle(pathname) {
   const segment = pathname.replace('/admin', '').replace(/^\//, '') || 'overview';
+  if (segment === 'activity') return 'Activity Log';
   return segment.charAt(0).toUpperCase() + segment.slice(1);
+}
+
+function useCurrentTime() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+  return now;
 }
 
 export default function AdminLayout() {
@@ -29,6 +35,7 @@ export default function AdminLayout() {
   const location = useLocation();
   const { user, logout } = useAuth();
   const adminName = user?.name && user.name !== 'Admin User' ? user.name : 'Balaji Lanka';
+  const now = useCurrentTime();
 
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
@@ -39,14 +46,16 @@ export default function AdminLayout() {
   }, []);
 
   const pageTitle = getPageTitle(location.pathname);
+  const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div className="admin-layout admin-theme">
-      {/* Mobile header */}
+      {/* Mobile Header */}
       <header className="admin-mobile-header" role="banner">
-        <Logo to="/admin" inverse />
+        <Logo to="/admin" isAdmin={true} showTagline={false} />
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div className="admin-topbar__avatar" style={{ flexShrink: 0 }}>{adminName.charAt(0)}</div>
+          <div className="admin-topbar__avatar">{adminName.charAt(0)}</div>
           <button
             className="admin-mobile-toggle"
             onClick={toggleSidebar}
@@ -74,29 +83,42 @@ export default function AdminLayout() {
         aria-label="Admin navigation"
       >
         <div className="admin-sidebar__header">
-          <Logo to="/admin" inverse />
+          <Logo to="/admin" isAdmin={true} showTagline={true} />
         </div>
 
         <nav className="admin-sidebar__nav" onClick={closeSidebar}>
-          <span className="admin-sidebar__section-label">Menu</span>
+          <span className="admin-sidebar__section-label">Management</span>
           {adminNavItems.map((item) => (
             <NavItem key={item.to} {...item} />
           ))}
-          <span className="admin-sidebar__section-label">System</span>
-          {adminSecondaryItems.map((item) => (
-            <NavItem key={item.to} {...item} />
-          ))}
-          <button className="admin-logout-btn" onClick={logout}>Logout</button>
+
+          <button className="admin-logout-btn" onClick={logout}>
+            Logout
+          </button>
         </nav>
       </aside>
 
-      {/* Main content area */}
+      {/* Main Body */}
       <div className="admin-body">
+        {/* Topbar */}
         <div className="admin-topbar">
           <div className="admin-topbar__left">
-            <h1 className="admin-topbar__title">{pageTitle}</h1>
+            <div className="admin-topbar__logo">
+              <Logo to="/admin" isAdmin={true} showTagline={false} />
+            </div>
+            <div className="admin-topbar__breadcrumb">
+              <span className="admin-topbar__breadcrumb-root">Admin</span>
+              <span className="admin-topbar__breadcrumb-sep">/</span>
+              <span className="admin-topbar__breadcrumb-page">{pageTitle}</span>
+            </div>
           </div>
+
           <div className="admin-topbar__right">
+            <div className="admin-topbar__datetime">
+              <span className="admin-topbar__date">{dateStr}</span>
+              <span className="admin-topbar__time">{timeStr}</span>
+            </div>
+            <div className="admin-topbar__divider" />
             <div className="admin-topbar__profile">
               <div className="admin-topbar__avatar">{adminName.charAt(0)}</div>
               <div className="admin-topbar__info">

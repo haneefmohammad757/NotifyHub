@@ -100,7 +100,7 @@ export default function StudentQueries() {
   return (
     <div className="student-queries">
       <div className="student-queries__header">
-        <h1 className="student-queries__title">Help Desk & Queries</h1>
+        <h1 className="student-queries__title">Ask &amp; Get Answers</h1>
         {!showForm && (
           <button className="btn btn--primary" onClick={() => setShowForm(true)}>
             Ask a Query
@@ -110,7 +110,7 @@ export default function StudentQueries() {
 
       {showForm && (
         <div className="student-queries__form-card">
-          <h2 className="student-queries__form-title">Ask for Help</h2>
+          <h2 className="student-queries__form-title">Raise a New Query</h2>
           <form onSubmit={handleSubmit}>
             {formError && <div className="form-error">{formError}</div>}
             

@@ -52,7 +52,6 @@ export default function StudentCalendar() {
   const allItems = useMemo(() => {
     let items = [
       ...events.map(e => ({ ...e, _type: 'event' })),
-      // Only include announcements that have a deadline
       ...announcements.filter(a => a.deadline).map(a => ({ ...a, _type: 'announcement', date: a.deadline }))
     ];
 
@@ -68,7 +67,6 @@ export default function StudentCalendar() {
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
   
-  // getDay() returns 0 for Sunday
   const firstDayIndex = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -96,7 +94,7 @@ export default function StudentCalendar() {
     );
   }
 
-  // Mobile layout flat list of events for the month
+  // All events & deadlines for the currently displayed month
   const currentMonthItems = allItems.filter(item => {
     if (!item.date) return false;
     const itemDate = new Date(item.date);
@@ -106,8 +104,8 @@ export default function StudentCalendar() {
   return (
     <div className="student-calendar page-wrapper">
       <div className="calendar-header">
-        <h1 className="calendar-title">Calendar</h1>
-        <p className="calendar-subtitle">View upcoming events and deadlines.</p>
+        <h1 className="calendar-title">Event Timeline</h1>
+        <p className="calendar-subtitle">Track all events and deadlines across your semester.</p>
         
         <div className="calendar-controls">
           <div className="calendar-nav">
@@ -183,29 +181,62 @@ export default function StudentCalendar() {
         </div>
       </div>
 
-      {/* Mobile List View (Hidden on Desktop) */}
-      <div className="calendar-mobile-list">
+      {/* Events & Deadlines List Below Calendar */}
+      <div className="calendar-events-section">
+        <div className="calendar-events-section__header">
+          <h2 className="calendar-events-section__title">
+            Events & Deadlines for {monthNames[month]} {year}
+          </h2>
+          <span className="calendar-events-section__count">
+            {currentMonthItems.length} item{currentMonthItems.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
         {currentMonthItems.length === 0 ? (
-          <EmptyState title="No events" description="No events scheduled for this period." />
+          <div className="calendar-events-empty">
+            <span className="calendar-events-empty__icon">📅</span>
+            <p>No events or deadlines scheduled for {monthNames[month]} {year}.</p>
+          </div>
         ) : (
-          currentMonthItems.map(item => {
-            const date = new Date(item.date);
-            return (
-              <div key={`${item._type}-${item.id}`} className="mobile-event-card" onClick={() => setSelectedItem(item)}>
-                <div className="mobile-event-card__date">
-                  <div className="mobile-event-card__day">{date.getUTCDate()}</div>
-                  <div className="mobile-event-card__month">{monthNames[date.getUTCMonth()].substring(0,3)}</div>
-                </div>
-                <div className="mobile-event-card__details">
-                  <div className="mobile-event-card__type">
-                    {item._type === 'event' ? <><IconEvent width={12} height={12} /> Event</> : <><IconAnnouncement width={12} height={12} /> Deadline</>}
+          <div className="calendar-events-list">
+            {currentMonthItems.map(item => {
+              const d = new Date(item.date);
+              const dayNum = d.getUTCDate();
+              const monthStr = monthNames[d.getUTCMonth()].substring(0, 3);
+              const isEvent = item._type === 'event';
+
+              return (
+                <div
+                  key={`list-${item._type}-${item.id}`}
+                  className={`calendar-event-row ${isEvent ? 'calendar-event-row--event' : 'calendar-event-row--deadline'}`}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  <div className="calendar-event-row__date-badge">
+                    <span className="calendar-event-row__day">{dayNum}</span>
+                    <span className="calendar-event-row__month">{monthStr}</span>
                   </div>
-                  <h3 className="mobile-event-card__title">{item.title}</h3>
-                  {item.startTime && <div className="mobile-event-card__time">{item.startTime}</div>}
+
+                  <div className="calendar-event-row__body">
+                    <div className="calendar-event-row__top">
+                      <span className={`calendar-event-row__type ${isEvent ? 'type-event' : 'type-deadline'}`}>
+                        {isEvent ? <><IconEvent width={12} height={12} /> Event</> : <><IconAnnouncement width={12} height={12} /> Deadline</>}
+                      </span>
+                      {item.category && <span className="calendar-event-row__category">{item.category}</span>}
+                    </div>
+
+                    <h3 className="calendar-event-row__title">{item.title}</h3>
+                    
+                    <div className="calendar-event-row__meta">
+                      {item.startTime && <span>🕒 {item.startTime} {item.endTime ? `- ${item.endTime}` : ''}</span>}
+                      {item.venue && <span>📍 {item.venue}</span>}
+                    </div>
+                  </div>
+
+                  <div className="calendar-event-row__arrow">View →</div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </div>
 

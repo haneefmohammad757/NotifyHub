@@ -61,13 +61,13 @@
   height: 80px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  color: #000;
+  color: #fff;
   font-size: 32px;
   font-weight: var(--weight-bold);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
 }
 
 .admin-settings__profile-details {
@@ -168,7 +168,7 @@
 
 .admin-settings__toggle:checked::after {
   left: 22px;
-  background: #000;
+  background: #fff;
 }
 
 /* System Info */

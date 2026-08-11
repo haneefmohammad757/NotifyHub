@@ -1,12 +1,108 @@
 /* ============================================
-   Student Home — Campus Dashboard
-   Clean, spacious, professional redesign.
-   No excessive glassmorphism or gradients.
+   Student Home — My Hub
+   Dynamic, live campus dashboard.
+   80% consistent palette, 20% accent freedom.
    ============================================ */
+
+/* ── Staggered entry animations ─────────────────────────────────────────── */
+@keyframes shFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes shSlideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes shPop {
+  0%   { transform: scale(0.92); opacity: 0; }
+  70%  { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
 
 /* ── Root wrapper ─────────────────────────────────────────────────────────── */
 .sh-root {
   padding-bottom: var(--space-12);
+  animation: shFadeUp 0.4s ease both;
+}
+
+/* ── Campus Announcements Hero Box ───────────────────────────────────────── */
+@keyframes shGlowPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.05); }
+}
+
+.sh-campus-box {
+  position: relative;
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: linear-gradient(135deg, #6C5CE7 0%, #0EA5E9 50%, #00C48C 100%);
+  overflow: hidden;
+  animation: shFadeUp 0.5s 0.1s ease both;
+}
+
+.sh-campus-box__glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: shGlowPulse 4s ease-in-out infinite;
+}
+
+.sh-campus-box__content {
+  background: var(--surface);
+  border-radius: calc(var(--radius-lg) - 2px);
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  position: relative;
+  z-index: 1;
+}
+
+.sh-campus-box__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(108, 92, 231, 0.15);
+}
+
+.sh-campus-box__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sh-campus-box__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-2);
+}
+
+.sh-campus-box__desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: 640px;
 }
 
 /* ── Page Header ─────────────────────────────────────────────────────────── */
@@ -785,6 +881,10 @@
   .sh-stats-row {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .sh-campus-box__content {
+    padding: var(--space-5) var(--space-5);
+  }
 }
 
 @media (max-width: 480px) {
@@ -801,5 +901,17 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-1);
+  }
+
+  .sh-campus-box__content {
+    flex-direction: column;
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .sh-campus-box__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
   }
 }

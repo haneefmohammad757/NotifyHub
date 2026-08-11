@@ -100,33 +100,77 @@
   --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.12);
 }
 
-/* Admin (Dark/Premium Control Center) Theme */
+/* Admin (Dark/Premium Command Center) Theme — Indigo/Violet */
 .admin-theme {
+  --bg-primary: #0B0E14;
+  --bg-secondary: #12161F;
+  --surface: #181D2A;
+  --surface-elevated: #1F2538;
+
+  --text-primary: #EDF0F7;
+  --text-secondary: #8D94AE;
+  --text-tertiary: #5A6179;
+  --text-inverse: #0B0E14;
+
+  --border: #262D40;
+  --border-light: #1C2233;
+
+  --nav-bg: #0B0E14;
+  --nav-text: #8D94AE;
+  --nav-accent: #818CF8;
+
+  --accent: #818CF8;
+  --accent-hover: #6C63FF;
+  --accent-soft: rgba(129, 140, 248, 0.1);
+
+  --admin-gradient-start: #818CF8;
+  --admin-gradient-mid: #A78BFA;
+  --admin-gradient-end: #C084FC;
+  --admin-warm: #F59E0B;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Student Dark Mode Override */
+.dark-theme {
   --bg-primary: #0D1117;
-  --bg-secondary: #161B25;
+  --bg-secondary: #161B22;
   --surface: #1C222E;
   --surface-elevated: #252B3A;
 
-  --text-primary: #ECF0F5;
-  --text-secondary: #8B92A8;
-  --text-tertiary: #5D6478;
+  --text-primary: #EDF0F7;
+  --text-secondary: #8D94AE;
+  --text-tertiary: #5A6179;
   --text-inverse: #0D1117;
 
-  --border: #2A3142;
-  --border-light: #1F2636;
+  --border: #262D40;
+  --border-light: #1C2233;
 
-  --nav-bg: #0D1117;
-  --nav-text: #8B92A8;
-  --nav-accent: #34D399;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
 
-  --accent: #34D399;
-  --accent-hover: #2CC38A;
-  --accent-soft: rgba(52, 211, 153, 0.1);
+/* Admin Light Mode Override */
+.admin-theme.light-theme {
+  --bg-primary: #F8F9FC;
+  --bg-secondary: #EEF0F6;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
 
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 24px rgba(52, 211, 153, 0.12);
+  --text-primary: #1A1D2E;
+  --text-secondary: #5A5F7A;
+  --text-tertiary: #9498B1;
+  --text-inverse: #FFFFFF;
+
+  --border: #DFE2ED;
+  --border-light: #ECEEF5;
+
+  --shadow-sm: 0 1px 3px rgba(26, 29, 46, 0.04);
+  --shadow-md: 0 4px 14px rgba(26, 29, 46, 0.08);
+  --shadow-lg: 0 12px 28px rgba(26, 29, 46, 0.12);
 }
 
 /* --- Reset & Base --- */
@@ -256,12 +300,12 @@ select {
 
 .admin-theme .btn--primary {
   background-color: var(--accent);
-  color: #000;
+  color: #fff;
 }
 
 .admin-theme .btn--primary:hover:not(:disabled) {
   background-color: var(--accent-hover);
-  box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
 }
 
 .btn--secondary {

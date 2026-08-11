@@ -1,5 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#111318"/>
-  <text x="16" y="21" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#F7F7F4">N</text>
-  <rect x="22" y="6" width="5" height="5" rx="2.5" fill="#FF5A36"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="redGradFav" x1="40" y1="40" x2="360" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EE1D25" />
+      <stop offset="40%" stop-color="#D90429" />
+      <stop offset="75%" stop-color="#B7094C" />
+      <stop offset="100%" stop-color="#800F2F" />
+    </linearGradient>
+
+    <linearGradient id="greyGradFav" x1="240" y1="60" x2="240" y2="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7B828E" />
+      <stop offset="40%" stop-color="#4B515D" />
+      <stop offset="100%" stop-color="#2D323A" />
+    </linearGradient>
+  </defs>
+
+  <g>
+    <!-- Right Grey Stem -->
+    <path d="M 210 65 H 270 C 260 65 253 72 253 82 V 255 H 228 V 82 C 228 72 220 65 210 65 Z" fill="url(#greyGradFav)" />
+
+    <!-- Left Vertical Red Leg -->
+    <path d="M 118 285 H 168 C 158 285 152 278 152 268 V 90 H 128 V 268 C 128 278 122 285 118 285 Z" fill="url(#redGradFav)" />
+
+    <!-- Main Swooping Red Ribbon & Arch -->
+    <path d="M 78 190 C 42 165 28 115 50 78 C 72 40 115 42 142 62 C 162 76 182 108 202 140 C 230 184 262 235 305 272 C 328 292 355 295 322 305 C 272 320 225 285 192 235 C 168 198 145 155 125 120 C 110 95 95 68 76 68 C 60 68 48 85 52 105 C 56 125 72 155 78 190 Z" fill="url(#redGradFav)" />
+  </g>
 </svg>

@@ -1,6 +1,11 @@
 /* ============================================
-   Student Queries (Premium Ticket System)
+   Student Queries — Ask & Get Answers
    ============================================ */
+
+@keyframes queryFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
 
 .student-queries {
   display: flex;
@@ -9,6 +14,7 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  animation: queryFadeUp 0.4s ease both;
 }
 
 .student-queries__header {

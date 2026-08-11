@@ -110,8 +110,8 @@ export default function StudentDiscover() {
   return (
     <div className="student-discover page-wrapper">
       <div className="discover-header">
-        <h1 className="discover-title">Discovery Hub</h1>
-        <p className="discover-subtitle">Search across all announcements and upcoming events.</p>
+        <h1 className="discover-title">Explore Campus</h1>
+        <p className="discover-subtitle">Browse all announcements and events — sorted, filtered, and always live.</p>
         
         <div className="discover-search-bar">
           <IconSearch />

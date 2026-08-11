@@ -54,8 +54,8 @@ function PageHeader({ user, searchQuery, onSearchChange }) {
   return (
     <div className="sh-page-header">
       <div className="sh-page-header__text">
-        <p className="sh-greeting">{greeting}, <strong>{firstName}</strong></p>
-        <h1 className="sh-page-title">Campus Dashboard</h1>
+        <p className="sh-greeting">{greeting}, <strong>{firstName}</strong> — here's what's happening</p>
+        <h1 className="sh-page-title">NotifyHub</h1>
       </div>
       <div className="sh-search-wrap">
         <span className="sh-search-icon" aria-hidden="true"><IconSearch /></span>
@@ -74,6 +74,23 @@ function PageHeader({ user, searchQuery, onSearchChange }) {
             aria-label="Clear search"
           >×</button>
         )}
+      </div>
+    </div>
+  );
+}
+
+function CampusAnnouncementsBox() {
+  return (
+    <div className="sh-campus-box">
+      <div className="sh-campus-box__glow" aria-hidden="true" />
+      <div className="sh-campus-box__content">
+        <div className="sh-campus-box__icon" aria-hidden="true">📢</div>
+        <div className="sh-campus-box__text">
+          <h2 className="sh-campus-box__title">Campus Announcements</h2>
+          <p className="sh-campus-box__desc">
+            NotifyHub is your all-in-one campus communication platform — delivering official announcements, event schedules, and critical deadlines straight to your dashboard in real time. Stay informed, never miss a deadline, and keep up with everything happening on campus effortlessly.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -405,6 +422,9 @@ export default function StudentHome() {
     <div className="sh-root">
       {/* Page header — greeting + search */}
       <PageHeader user={user} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+
+      {/* Campus Announcements description */}
+      <CampusAnnouncementsBox />
 
       {/* Stats bar */}
       <StatsRow

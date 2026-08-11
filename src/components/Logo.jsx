@@ -1,72 +1,40 @@
 import { Link } from 'react-router-dom';
 import './Logo.css';
 
+/**
+ * NotifyHub Custom Red & Grey N Logo
+ */
 export const NotifyHubIcon = ({ width = 42, height = 42 }) => (
-  <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="logo-svg">
+  <svg width={width} height={height} viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="logo-svg">
     <defs>
-      {/* Ribbon N Gradients */}
-      <linearGradient id="nh_n_grad1" x1="12" y1="12" x2="36" y2="48" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#00E5FF" />
-        <stop offset="0.5" stopColor="#8C7CFF" />
-        <stop offset="1" stopColor="#D946EF" />
+      <linearGradient id="nh_red_grad" x1="40" y1="40" x2="360" y2="340" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#EE1D25" />
+        <stop offset="40%" stopColor="#D90429" />
+        <stop offset="75%" stopColor="#B7094C" />
+        <stop offset="100%" stopColor="#800F2F" />
       </linearGradient>
 
-      <linearGradient id="nh_n_grad2" x1="22" y1="12" x2="50" y2="52" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8C7CFF" />
-        <stop offset="0.5" stopColor="#F59E0B" />
-        <stop offset="1" stopColor="#FBBF24" />
+      <linearGradient id="nh_grey_grad" x1="240" y1="60" x2="240" y2="270" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#7B828E" />
+        <stop offset="40%" stopColor="#4B515D" />
+        <stop offset="100%" stopColor="#2D323A" />
       </linearGradient>
 
-      <radialGradient id="nh_glow" cx="32" cy="32" r="28" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8C7CFF" stopOpacity="0.35" />
-        <stop offset="0.7" stopColor="#00E5FF" stopOpacity="0.1" />
-        <stop offset="1" stopColor="#00E5FF" stopOpacity="0" />
-      </radialGradient>
-
-      <linearGradient id="nh_dot_grad" x1="34" y1="20" x2="40" y2="26" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FBBF24" />
-        <stop offset="1" stopColor="#F59E0B" />
-      </linearGradient>
-
-      <linearGradient id="nh_ring_grad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#00E5FF" stopOpacity="0.5" />
-        <stop offset="0.5" stopColor="#8C7CFF" stopOpacity="0.3" />
-        <stop offset="1" stopColor="#FBBF24" stopOpacity="0.5" />
-      </linearGradient>
+      <filter id="nh_icon_shadow" x="-10%" y="-10%" width="130%" height="130%">
+        <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#D90429" floodOpacity="0.25" />
+      </filter>
     </defs>
 
-    {/* Background Glow */}
-    <circle cx="32" cy="32" r="26" fill="url(#nh_glow)" />
+    <g filter="url(#nh_icon_shadow)">
+      {/* Right Grey Stem */}
+      <path d="M 210 65 H 270 C 260 65 253 72 253 82 V 255 H 228 V 82 C 228 72 220 65 210 65 Z" fill="url(#nh_grey_grad)" />
 
-    {/* Orbital Rings */}
-    <circle cx="32" cy="32" r="28" stroke="url(#nh_ring_grad)" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
-    <circle cx="32" cy="32" r="24" stroke="url(#nh_ring_grad)" strokeWidth="0.75" opacity="0.3" />
+      {/* Left Vertical Red Leg */}
+      <path d="M 118 285 H 168 C 158 285 152 278 152 268 V 90 H 128 V 268 C 128 278 122 285 118 285 Z" fill="url(#nh_red_grad)" />
 
-    {/* Floating Orbital Spheres */}
-    <circle cx="10" cy="22" r="2.2" fill="#00E5FF" />
-    <circle cx="52" cy="26" r="2.5" fill="#D946EF" />
-    <circle cx="18" cy="50" r="1.8" fill="#FBBF24" />
-
-    {/* 3D Ribbon 'N' Emblem */}
-    <path
-      d="M18 46V22C18 16.4772 22.4772 12 28 12C33.5228 12 38 16.4772 38 22V30"
-      stroke="url(#nh_n_grad1)"
-      strokeWidth="7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    
-    <path
-      d="M26 18L44 42V24C44 17.3726 38.6274 12 32 12"
-      stroke="url(#nh_n_grad2)"
-      strokeWidth="6.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-
-    {/* Center Golden Pin Dot */}
-    <circle cx="38" cy="24" r="3.5" fill="url(#nh_dot_grad)" />
-    <circle cx="38" cy="24" r="1.5" fill="#FFFFFF" />
+      {/* Main Swooping Red Ribbon & Diagonal N Arch */}
+      <path d="M 78 190 C 42 165 28 115 50 78 C 72 40 115 42 142 62 C 162 76 182 108 202 140 C 230 184 262 235 305 272 C 328 292 355 295 322 305 C 272 320 225 285 192 235 C 168 198 145 155 125 120 C 110 95 95 68 76 68 C 60 68 48 85 52 105 C 56 125 72 155 78 190 Z" fill="url(#nh_red_grad)" />
+    </g>
   </svg>
 );
 
@@ -78,23 +46,22 @@ export default function Logo({ to = '/', inverse = false, isAdmin = false, showT
   const isInverse = inverse || isActuallyAdmin;
 
   return (
-    <Link to={to} className={`logo-brand ${isActuallyAdmin ? 'logo-brand--admin' : 'logo-brand--student'} ${isInverse ? 'logo-brand--inverse' : ''}`} aria-label="NotifyHub home">
+    <Link
+      to={to}
+      className={`logo-brand ${isActuallyAdmin ? 'logo-brand--admin' : 'logo-brand--student'} ${isInverse ? 'logo-brand--inverse' : ''}`}
+      aria-label="NotifyHub home"
+    >
       <div className="logo-icon-box">
         <NotifyHubIcon width={42} height={42} />
       </div>
       <div className="logo-text-block">
         <div className="logo-title-row">
-          <span className="logo-notify-text">Notify</span>
-          <span className="logo-hub-text">Hub</span>
+          <span className="logo-wordmark">NOTIFYHUB</span>
           {isActuallyAdmin && <span className="admin-tag">ADMIN</span>}
         </div>
         {showTagline && (
           <div className="logo-tagline-row">
-            <span className="tag-connect">CONNECT</span>
-            <span className="tag-dot">•</span>
-            <span className="tag-inform">INFORM</span>
-            <span className="tag-dot">•</span>
-            <span className="tag-empower">EMPOWER</span>
+            <span className="logo-tagline-text">From Campus, For Students</span>
           </div>
         )}
       </div>
