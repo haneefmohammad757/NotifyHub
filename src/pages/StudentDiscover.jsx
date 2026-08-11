@@ -3,9 +3,11 @@ import { api } from '../services/api';
 import EmptyState from '../components/EmptyState';
 import AnnouncementModal from '../components/AnnouncementModal';
 import { IconSearch, IconAnnouncement, IconEvent, IconClock, IconMapPin, IconArrowRight } from '../components/Icons';
+import { useAuth } from '../hooks/useAuth';
 import './StudentDiscover.css';
 
 export default function StudentDiscover() {
+  const { user } = useAuth();
   const [announcements, setAnnouncements] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,12 +46,22 @@ export default function StudentDiscover() {
       ...events.map(e => ({ ...e, _type: 'event' }))
     ];
 
-    // 2. Filter by type
+    // 2. Filter by type & department/year targeting
     if (filter === 'ANNOUNCEMENTS') {
       items = items.filter(i => i._type === 'announcement');
     } else if (filter === 'EVENTS') {
       items = items.filter(i => i._type === 'event');
     }
+
+    // 2b. Target department & year filter
+    items = items.filter(item => {
+      if (item._type === 'announcement') {
+        const deptMatch = !item.targetDepartment || item.targetDepartment === 'ALL' || !user?.department || item.targetDepartment === user.department;
+        const yearMatch = !item.targetYear || item.targetYear === 'ALL' || !user?.year || item.targetYear === user.year;
+        return deptMatch && yearMatch;
+      }
+      return true;
+    });
 
     // 3. Search
     if (searchQuery.trim()) {

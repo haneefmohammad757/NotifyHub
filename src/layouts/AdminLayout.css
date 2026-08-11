@@ -20,15 +20,13 @@
   left: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background: linear-gradient(180deg, rgba(11, 14, 20, 0.97) 0%, rgba(18, 22, 31, 0.95) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #FFFFFF;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   z-index: 100;
   overflow-y: auto;
-  box-shadow: 2px 0 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 0 12px rgba(26, 29, 46, 0.04);
 }
 
 .admin-sidebar__header {
@@ -176,13 +174,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-8);
-  background-color: rgba(11, 14, 20, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: #FFFFFF;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(26, 29, 46, 0.04);
 }
 
 .admin-topbar__left {

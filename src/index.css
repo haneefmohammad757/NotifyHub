@@ -100,37 +100,37 @@
   --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.12);
 }
 
-/* Admin (Dark/Premium Command Center) Theme — Indigo/Violet */
+/* Admin Portal Theme — Matched to Student Home Page Theme */
 .admin-theme {
-  --bg-primary: #0B0E14;
-  --bg-secondary: #12161F;
-  --surface: #181D2A;
-  --surface-elevated: #1F2538;
+  --bg-primary: #F8F9FC;
+  --bg-secondary: #EEF0F6;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
 
-  --text-primary: #EDF0F7;
-  --text-secondary: #8D94AE;
-  --text-tertiary: #5A6179;
-  --text-inverse: #0B0E14;
+  --text-primary: #1A1D2E;
+  --text-secondary: #5A5F7A;
+  --text-tertiary: #9498B1;
+  --text-inverse: #FFFFFF;
 
-  --border: #262D40;
-  --border-light: #1C2233;
+  --border: #DFE2ED;
+  --border-light: #ECEEF5;
 
-  --nav-bg: #0B0E14;
-  --nav-text: #8D94AE;
-  --nav-accent: #818CF8;
+  --nav-bg: #1A1D2E;
+  --nav-text: #F0F1F5;
+  --nav-accent: #6C5CE7;
 
-  --accent: #818CF8;
-  --accent-hover: #6C63FF;
-  --accent-soft: rgba(129, 140, 248, 0.1);
+  --accent: #6C5CE7;
+  --accent-hover: #5A4BD1;
+  --accent-soft: rgba(108, 92, 231, 0.08);
 
-  --admin-gradient-start: #818CF8;
-  --admin-gradient-mid: #A78BFA;
-  --admin-gradient-end: #C084FC;
-  --admin-warm: #F59E0B;
+  --admin-gradient-start: #6C5CE7;
+  --admin-gradient-mid: #818CF8;
+  --admin-gradient-end: #A78BFA;
+  --admin-warm: #FF9F43;
 
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 1px 3px rgba(26, 29, 46, 0.04);
+  --shadow-md: 0 4px 14px rgba(26, 29, 46, 0.08);
+  --shadow-lg: 0 12px 28px rgba(26, 29, 46, 0.12);
 }
 
 /* Student Dark Mode Override */

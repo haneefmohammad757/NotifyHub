@@ -20,6 +20,8 @@ export default function AdminAnnouncements() {
     category: 'GENERAL',
     priority: 'NORMAL',
     status: 'DRAFT',
+    targetDepartment: 'ALL',
+    targetYear: 'ALL',
     deadline: '',
     attachment: null,
     removeAttachment: false,
@@ -55,6 +57,8 @@ export default function AdminAnnouncements() {
       category: 'GENERAL',
       priority: 'NORMAL',
       status: 'DRAFT',
+      targetDepartment: 'ALL',
+      targetYear: 'ALL',
       deadline: '',
       attachment: null,
       removeAttachment: false,
@@ -73,6 +77,8 @@ export default function AdminAnnouncements() {
       category: announcement.category,
       priority: announcement.priority,
       status: announcement.status,
+      targetDepartment: announcement.targetDepartment || 'ALL',
+      targetYear: announcement.targetYear || 'ALL',
       deadline: announcement.deadline ? new Date(announcement.deadline).toISOString().slice(0, 16) : '',
       attachment: null,
       removeAttachment: false,
@@ -126,38 +132,44 @@ export default function AdminAnnouncements() {
       payload.append('category', formData.category);
       payload.append('priority', formData.priority);
       payload.append('status', formData.status);
+      payload.append('targetDepartment', formData.targetDepartment);
+      payload.append('targetYear', formData.targetYear);
       
       if (formData.deadline) {
-        payload.append('deadline', new Date(formData.deadline).toISOString());
+        payload.append('deadline', formData.deadline);
+      } else {
+        payload.append('deadline', '');
       }
-      
+
       if (formData.attachment) {
         payload.append('attachment', formData.attachment);
       }
-      
+
       if (formData.removeAttachment) {
         payload.append('removeAttachment', 'true');
       }
 
       if (modalMode === 'CREATE') {
-        await api.upload('/announcements', 'POST', payload);
+        await api.postFormData('/announcements', payload);
       } else {
-        await api.upload(`/announcements/${currentId}`, 'PUT', payload);
+        await api.putFormData(`/announcements/${currentId}`, payload);
       }
 
-      setIsModalOpen(false);
+      closeModal();
       fetchAnnouncements();
     } catch (err) {
-      setFormError(err.message || 'An error occurred while saving.');
+      setFormError(err.message || 'Failed to save announcement.');
     } finally {
       setIsSubmitting(false);
     }
   }
 
   async function handleArchive(id) {
-    if (!window.confirm('Are you sure you want to archive this announcement? It will be removed from the student feed.')) return;
+    if (!window.confirm('Are you sure you want to archive this announcement?')) return;
     try {
-      await api.delete(`/announcements/${id}`);
+      const formData = new FormData();
+      formData.append('status', 'ARCHIVED');
+      await api.putFormData(`/announcements/${id}`, formData);
       fetchAnnouncements();
     } catch (err) {
       alert(err.message || 'Failed to archive announcement.');
@@ -165,17 +177,20 @@ export default function AdminAnnouncements() {
   }
 
   if (loading) {
-    return <div className="admin-announcements">Loading announcements...</div>;
+    return <div className="admin-loading">Loading announcements...</div>;
   }
 
   if (error) {
-    return <div className="admin-announcements">{error}</div>;
+    return <div className="admin-error-banner">{error}</div>;
   }
 
   return (
     <div className="admin-announcements">
-      <div className="admin-announcements__header">
-        <h2>Announcements</h2>
+      <div className="admin-page-header">
+        <div>
+          <h2 className="admin-page-title">Announcements Manager</h2>
+          <p className="admin-page-subtitle">Create, broadcast, target departments &amp; manage campus notices</p>
+        </div>
         <button className="admin-btn-primary" onClick={openCreateModal}>
           + Create Announcement
         </button>
@@ -187,17 +202,18 @@ export default function AdminAnnouncements() {
             <tr>
               <th>Title</th>
               <th>Category</th>
+              <th>Target Dept</th>
+              <th>Target Year</th>
               <th>Priority</th>
               <th>Status</th>
               <th>Created By</th>
-              <th>Attachment</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {announcements.length === 0 ? (
               <tr>
-                <td colSpan="7" className="admin-table__empty">
+                <td colSpan="8" className="admin-table__empty">
                   No announcements found.
                 </td>
               </tr>
@@ -206,6 +222,16 @@ export default function AdminAnnouncements() {
                 <tr key={item.id}>
                   <td>{item.title}</td>
                   <td>{item.category}</td>
+                  <td>
+                    <span className="admin-target-badge">
+                      {item.targetDepartment || 'ALL'}
+                    </span>
+                  </td>
+                  <td>
+                    <span className="admin-target-badge">
+                      {item.targetYear || 'ALL'}
+                    </span>
+                  </td>
                   <td>
                     <span className={`admin-badge admin-badge--${item.priority.toLowerCase()}`}>
                       {item.priority}
@@ -216,14 +242,7 @@ export default function AdminAnnouncements() {
                       {item.status}
                     </span>
                   </td>
-                  <td>{item.creator?.name || 'Unknown'}</td>
-                  <td>
-                    {item.attachmentName ? (
-                      <span className="admin-attachment-badge">📎 {item.attachmentName.substring(0, 15)}{item.attachmentName.length > 15 ? '...' : ''}</span>
-                    ) : (
-                      <span className="admin-text-muted">-</span>
-                    )}
-                  </td>
+                  <td>{item.creator?.name || 'ADMIN'}</td>
                   <td>
                     <div className="admin-actions">
                       <button className="admin-action-btn" onClick={() => openEditModal(item)}>
@@ -265,7 +284,7 @@ export default function AdminAnnouncements() {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g., Placement Registration Open"
+                  placeholder="e.g., CSE Placement Registration Open"
                   required
                 />
               </div>
@@ -279,6 +298,42 @@ export default function AdminAnnouncements() {
                   placeholder="Full announcement details..."
                   required
                 />
+              </div>
+
+              {/* Department & Year Targeting Grid */}
+              <div className="admin-form-row">
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Target Department</label>
+                  <select
+                    className="admin-form-input"
+                    value={formData.targetDepartment}
+                    onChange={(e) => setFormData({ ...formData, targetDepartment: e.target.value })}
+                  >
+                    <option value="ALL">All Departments</option>
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="MECH">MECH</option>
+                    <option value="CIVIL">CIVIL</option>
+                    <option value="IT">IT</option>
+                    <option value="AI&DS">AI&amp;DS</option>
+                  </select>
+                </div>
+
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Target Academic Year</label>
+                  <select
+                    className="admin-form-input"
+                    value={formData.targetYear}
+                    onChange={(e) => setFormData({ ...formData, targetYear: e.target.value })}
+                  >
+                    <option value="ALL">All Years</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                  </select>
+                </div>
               </div>
 
               <div className="admin-form-row">

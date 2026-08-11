@@ -47,12 +47,32 @@ const IconUser = () => (
   </svg>
 );
 
+const IconId = () => (
+  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <circle cx="9" cy="10" r="2" />
+    <line x1="15" y1="8" x2="17" y2="8" />
+    <line x1="15" y1="12" x2="17" y2="12" />
+    <line x1="7" y1="16" x2="17" y2="16" />
+  </svg>
+);
+
+const IconAcademic = () => (
+  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <path d="M22 10v6M2 10l10-5 10 5-10 5z" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 12v5c3 3 9 3 12 0v-5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 export default function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [rollNo, setRollNo] = useState('');
+  const [year, setYear] = useState('1st Year');
+  const [department, setDepartment] = useState('CSE');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
@@ -66,8 +86,8 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (!name.trim() || !email.trim() || !password || !confirmPassword) {
-      setError('All fields are required.');
+    if (!name.trim() || !email.trim() || !rollNo.trim() || !password || !confirmPassword) {
+      setError('Please fill in all required fields.');
       return;
     }
 
@@ -83,7 +103,7 @@ export default function RegisterPage() {
 
     setSubmitting(true);
     try {
-      await register(name.trim(), email.trim(), password);
+      await register(name.trim(), email.trim(), password, rollNo.trim(), year, department);
       navigate('/student', { replace: true });
     } catch (err) {
       setError(err.message || 'Registration failed.');
@@ -94,7 +114,7 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-page student-theme">
-      <div className="auth-wrapper">
+      <div className="auth-wrapper" style={{ maxWidth: '480px' }}>
         <div className="auth-card">
           
           <div className="auth-card__header">
@@ -104,7 +124,7 @@ export default function RegisterPage() {
 
             <h1 className="auth-card__heading">Create Account</h1>
             <p className="auth-card__subheading">
-              Register your NotifyHub student account to stay updated.
+              Register your NotifyHub student profile to receive department & year circulars.
             </p>
           </div>
 
@@ -149,6 +169,69 @@ export default function RegisterPage() {
                   required
                   autoComplete="email"
                 />
+              </div>
+            </div>
+
+            {/* Roll Number */}
+            <div className="auth-field">
+              <label className="auth-field__label" htmlFor="reg-roll">Roll Number</label>
+              <div className="auth-field__input-wrapper">
+                <span className="auth-field__input-icon"><IconId /></span>
+                <input
+                  id="reg-roll"
+                  className="auth-field__input"
+                  type="text"
+                  placeholder="e.g. 21A91A0501"
+                  value={rollNo}
+                  onChange={(e) => setRollNo(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Year & Department Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              {/* Year */}
+              <div className="auth-field">
+                <label className="auth-field__label" htmlFor="reg-year">Academic Year</label>
+                <div className="auth-field__input-wrapper">
+                  <span className="auth-field__input-icon"><IconAcademic /></span>
+                  <select
+                    id="reg-year"
+                    className="auth-field__input"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    style={{ appearance: 'none', cursor: 'pointer' }}
+                  >
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Department */}
+              <div className="auth-field">
+                <label className="auth-field__label" htmlFor="reg-dept">Department</label>
+                <div className="auth-field__input-wrapper">
+                  <span className="auth-field__input-icon"><IconAcademic /></span>
+                  <select
+                    id="reg-dept"
+                    className="auth-field__input"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    style={{ appearance: 'none', cursor: 'pointer' }}
+                  >
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="MECH">MECH</option>
+                    <option value="CIVIL">CIVIL</option>
+                    <option value="IT">IT</option>
+                    <option value="AI&DS">AI&amp;DS</option>
+                  </select>
+                </div>
               </div>
             </div>
 

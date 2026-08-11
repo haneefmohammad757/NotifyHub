@@ -8,7 +8,7 @@
 
 /* --- Welcome Banner --- */
 .admin-overview__welcome {
-  background: linear-gradient(135deg, #0B0E14 0%, #12161F 40%, #181D2A 100%);
+  background: linear-gradient(135deg, #1A1D2E 0%, #282C44 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
@@ -18,6 +18,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: #FFFFFF;
 }
 
 .admin-welcome__badge {
@@ -56,7 +57,7 @@
   font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
-  color: var(--text-primary);
+  color: #FFFFFF;
   line-height: 1.2;
   margin-bottom: var(--space-2);
 }
@@ -70,7 +71,7 @@
 
 .admin-overview__welcome p {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
+  color: #B0B3C7;
   line-height: var(--leading-relaxed);
   max-width: 640px;
 }

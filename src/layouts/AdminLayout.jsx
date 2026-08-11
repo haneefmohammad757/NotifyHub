@@ -34,7 +34,7 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
-  const adminName = user?.name && user.name !== 'Admin User' ? user.name : 'Balaji Lanka';
+  const adminName = user?.name ? user.name : 'ADMIN';
   const now = useCurrentTime();
 
   const toggleSidebar = useCallback(() => {

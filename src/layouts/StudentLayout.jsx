@@ -43,10 +43,10 @@ export default function StudentLayout() {
             <NotificationDropdown />
             <div className="student-user-badge">
               <span className="student-avatar">
-                {user?.role === 'ADMIN' ? 'B' : (user?.name ? user.name.charAt(0).toUpperCase() : 'S')}
+                {user?.role === 'ADMIN' ? (user?.name ? user.name.charAt(0).toUpperCase() : 'A') : (user?.name ? user.name.charAt(0).toUpperCase() : 'S')}
               </span>
               <span className="student-user-name">
-                {user?.role === 'ADMIN' ? (user?.name && user.name !== 'Admin User' ? user.name : 'Balaji Lanka') : (user?.name || 'Student')}
+                {user?.role === 'ADMIN' ? (user?.name ? user.name : 'ADMIN') : (user?.name || 'Student')}
               </span>
             </div>
             <button className="student-logout-btn" onClick={logout} title="Log out">
