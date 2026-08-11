@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 import EmptyState from '../components/EmptyState';
 import './StudentQueries.css';
 
@@ -10,6 +11,7 @@ const IconHelp = () => (
 );
 
 export default function StudentQueries() {
+  const { user } = useAuth();
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,13 +27,23 @@ export default function StudentQueries() {
     fetchQueries();
     const intervalId = setInterval(() => fetchQueries(true), 10000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [user]);
 
   const fetchQueries = async (silent = false) => {
     try {
       if (!silent) setLoading(true);
       const data = await api.get('/queries');
-      setQueries(data);
+      
+      // Filter so students ONLY see their own queries
+      const myQueries = (data || []).filter(q => {
+        if (!user) return true;
+        if (q.studentId && user.id) return q.studentId === user.id;
+        if (q.student?.id && user.id) return q.student.id === user.id;
+        if (q.student?.email && user.email) return q.student.email === user.email;
+        return true;
+      });
+
+      setQueries(myQueries);
       setError(null);
     } catch (err) {
       setError('Failed to load queries.');
@@ -68,16 +80,6 @@ export default function StudentQueries() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this query?')) return;
-    try {
-      await api.delete(`/queries/${id}`);
-      setQueries(queries.filter(q => q.id !== id));
-    } catch (err) {
-      alert(err.message || 'Failed to delete query.');
-    }
-  };
-
   if (loading) {
     return (
       <div className="student-queries">
@@ -91,7 +93,7 @@ export default function StudentQueries() {
       <div className="student-queries">
         <EmptyState title="Error" description={error} />
         <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-          <button className="btn btn--primary" onClick={fetchQueries}>Try Again</button>
+          <button className="btn btn--primary" onClick={() => fetchQueries(false)}>Try Again</button>
         </div>
       </div>
     );
@@ -179,31 +181,6 @@ export default function StudentQueries() {
                   <span className={`query-status query-status--${q.status.toLowerCase()}`}>
                     {q.status.replace('_', ' ')}
                   </span>
-                  {(q.status === 'OPEN' || q.status === 'RESOLVED') && (
-                    <button
-                      onClick={() => handleDelete(q.id)}
-                      title="Delete query"
-                      style={{
-                        background: 'rgba(255,82,82,0.08)',
-                        border: '1px solid rgba(255,82,82,0.25)',
-                        color: '#FF5252',
-                        borderRadius: '8px',
-                        padding: '4px 8px',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        transition: 'all 0.15s'
-                      }}
-                    >
-                      <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                      Delete
-                    </button>
-                  )}
                 </div>
               </div>
               
