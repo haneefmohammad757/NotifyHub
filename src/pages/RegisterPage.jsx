@@ -101,9 +101,17 @@ export default function RegisterPage() {
       return;
     }
 
+    const cleanedRoll = rollNo.trim().toUpperCase();
+    const ROLL_NO_REGEX = /^[0-9]{2}89[15]A[0-9]{4}$/;
+    
+    if (!ROLL_NO_REGEX.test(cleanedRoll)) {
+      setError('Invalid Roll Number format. Example: 21891A0501 (Format: [Year][89][1 or 5][A][4 digits]).');
+      return;
+    }
+
     setSubmitting(true);
     try {
-      await register(name.trim(), email.trim(), password, rollNo.trim(), year, department);
+      await register(name.trim(), email.trim(), password, cleanedRoll, year, department);
       navigate('/student', { replace: true });
     } catch (err) {
       setError(err.message || 'Registration failed.');
@@ -174,16 +182,19 @@ export default function RegisterPage() {
 
             {/* Roll Number */}
             <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-roll">Roll Number</label>
+              <label className="auth-field__label" htmlFor="reg-roll">
+                Roll Number <span style={{ fontWeight: 'normal', color: 'var(--auth-text-dim)', fontSize: '0.75rem' }}>(Format: 21891A0501)</span>
+              </label>
               <div className="auth-field__input-wrapper">
                 <span className="auth-field__input-icon"><IconId /></span>
                 <input
                   id="reg-roll"
                   className="auth-field__input"
                   type="text"
-                  placeholder="e.g. 21A91A0501"
+                  placeholder="e.g. 21891A0501"
                   value={rollNo}
-                  onChange={(e) => setRollNo(e.target.value)}
+                  onChange={(e) => setRollNo(e.target.value.toUpperCase().slice(0, 10))}
+                  maxLength={10}
                   required
                 />
               </div>
