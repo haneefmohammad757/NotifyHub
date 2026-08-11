@@ -24,14 +24,14 @@ function cookieOptions() {
 
 /** Strip sensitive fields from user object */
 function safeUser(user) {
-  return { id: user.id, name: user.name, email: user.email, role: user.role };
+  return { id: user.id, name: user.name, email: user.email, role: user.role, rollNo: user.rollNo, year: user.year, department: user.department };
 }
 
 // ─── POST /api/auth/register ────────────────────────────
 
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, rollNo, year, department } = req.body;
 
     // Validate input
     if (!name || !email || !password) {
@@ -51,7 +51,7 @@ router.post('/register', async (req, res, next) => {
     // Hash password and create user (always STUDENT role)
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await prisma.user.create({
-      data: { name, email, passwordHash, role: 'STUDENT' },
+      data: { name, email, passwordHash, role: 'STUDENT', rollNo, year, department },
     });
 
     // Issue token

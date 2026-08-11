@@ -102,7 +102,7 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
   });
 }, async (req, res, next) => {
   try {
-    const { title, description, category, priority, status, deadline } = req.body;
+    const { title, description, category, priority, status, deadline, targetDepartment, targetYear } = req.body;
 
     if (!title || !description || !category || !priority || !status) {
       return res.status(400).json({ error: 'Missing required fields.' });
@@ -138,6 +138,8 @@ router.post('/', requireAuth, requireRole('ADMIN'), (req, res, next) => {
         category,
         priority,
         status,
+        targetDepartment: targetDepartment || 'ALL',
+        targetYear: targetYear || 'ALL',
         deadline: deadline ? new Date(deadline) : null,
         publishedAt,
         createdBy: req.user.id,
@@ -190,7 +192,7 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
 }, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, description, category, priority, status, deadline, removeAttachment } = req.body;
+    const { title, description, category, priority, status, deadline, removeAttachment, targetDepartment, targetYear } = req.body;
 
     if (!title || !description || !category || !priority || !status) {
       return res.status(400).json({ error: 'Missing required fields.' });
@@ -235,6 +237,8 @@ router.put('/:id', requireAuth, requireRole('ADMIN'), (req, res, next) => {
         category,
         priority,
         status,
+        targetDepartment: targetDepartment || 'ALL',
+        targetYear: targetYear || 'ALL',
         deadline: deadline ? new Date(deadline) : null,
         publishedAt,
         ...attachmentFields

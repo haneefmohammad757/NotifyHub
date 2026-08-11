@@ -11,7 +11,7 @@ export default function AdminOverview() {
   const [recentQueries, setRecentQueries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const adminName = user?.name ? user.name : 'ADMIN';
+  var adminName = user?.name ? user.name : 'ADMIN';
 
   useEffect(() => {
     async function fetchData() {

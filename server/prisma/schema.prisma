@@ -53,6 +53,9 @@ model User {
   email        String   @unique
   passwordHash String   @map("password_hash")
   role         UserRole @default(STUDENT)
+  rollNo       String?  @map("roll_no")
+  year         String?
+  department   String?
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -68,16 +71,18 @@ model User {
 }
 
 model Announcement {
-  id          String                @id @default(cuid())
-  title       String
-  description String
-  category    AnnouncementCategory  @default(GENERAL)
-  priority    AnnouncementPriority  @default(NORMAL)
-  status      AnnouncementStatus    @default(DRAFT)
-  deadline    DateTime?
-  publishedAt DateTime?             @map("published_at")
-  createdAt   DateTime              @default(now()) @map("created_at")
-  updatedAt   DateTime              @updatedAt @map("updated_at")
+  id               String                @id @default(cuid())
+  title            String
+  description      String
+  category         AnnouncementCategory  @default(GENERAL)
+  priority         AnnouncementPriority  @default(NORMAL)
+  status           AnnouncementStatus    @default(DRAFT)
+  targetDepartment String?               @map("target_department")
+  targetYear       String?               @map("target_year")
+  deadline         DateTime?
+  publishedAt      DateTime?             @map("published_at")
+  createdAt        DateTime              @default(now()) @map("created_at")
+  updatedAt        DateTime              @updatedAt @map("updated_at")
 
   attachmentUrl  String? @map("attachment_url")   // legacy — no longer used for new uploads
   attachmentName String? @map("attachment_name")
