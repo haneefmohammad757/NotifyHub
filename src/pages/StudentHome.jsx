@@ -352,9 +352,9 @@ export default function StudentHome() {
       if (!silent) setLoading(true);
       try {
         const [announcementsData, eventsData, queriesData] = await Promise.all([
-          api.get('/announcements'),
-          api.get('/events'),
-          api.get('/queries'),
+          api.get('/announcements').catch(() => []),
+          api.get('/events').catch(() => []),
+          api.get('/queries').catch(() => []),
         ]);
         setAnnouncements(announcementsData);
         setEvents(eventsData);

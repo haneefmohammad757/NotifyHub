@@ -23,8 +23,8 @@ export default function StudentDiscover() {
       if (!silent) setLoading(true);
       try {
         const [announcementsData, eventsData] = await Promise.all([
-          api.get('/announcements'),
-          api.get('/events')
+          api.get('/announcements').catch(() => []),
+          api.get('/events').catch(() => [])
         ]);
         setAnnouncements(announcementsData);
         setEvents(eventsData);
@@ -56,8 +56,8 @@ export default function StudentDiscover() {
     // 2b. Target department & year filter
     items = items.filter(item => {
       if (item._type === 'announcement') {
-        const deptMatch = !item.targetDepartment || item.targetDepartment === 'ALL' || !user?.department || item.targetDepartment === user.department;
-        const yearMatch = !item.targetYear || item.targetYear === 'ALL' || !user?.year || item.targetYear === user.year;
+        const deptMatch = !item.targetDepartment || item.targetDepartment === 'ALL' || item.targetDepartment === '' || !user?.department || item.targetDepartment === user.department;
+        const yearMatch = !item.targetYear || item.targetYear === 'ALL' || item.targetYear === '' || !user?.year || item.targetYear === user.year;
         return deptMatch && yearMatch;
       }
       return true;

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { logActivity } from '../lib/activityLogger.js';
@@ -22,9 +23,19 @@ const upload = multer({
 
 // ─── GET /api/events ──────────────────────────────────────
 
-router.get('/', requireAuth, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const { role } = req.user;
+    let role = 'STUDENT';
+    const token = req.cookies?.token;
+    if (token) {
+      try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await prisma.user.findUnique({ where: { id: payload.userId } });
+        if (user) role = user.role;
+      } catch (e) {
+        // guest fallback
+      }
+    }
     
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
