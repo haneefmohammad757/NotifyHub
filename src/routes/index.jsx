@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
 import { AuthProvider } from '../hooks/useAuth';
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -6,6 +6,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import StudentLayout from '../layouts/StudentLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
+import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import NotFound from '../pages/NotFound';
@@ -31,17 +32,15 @@ function Root() {
   );
 }
 
-// We need an Outlet for the root since we wrapped it with AuthProvider
-import { Outlet } from 'react-router-dom';
-
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     children: [
+      /* --- Public Landing Page --- */
       {
         index: true,
-        element: <Navigate to="/student" replace />,
+        element: <LandingPage />,
       },
       /* --- Public Auth Routes --- */
       {

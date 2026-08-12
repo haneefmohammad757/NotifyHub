@@ -1,7 +1,6 @@
 /**
- * Minimal inline SVG icons for NotifyHub navigation.
+ * Minimal inline SVG icons for NotifyHub navigation & landing components.
  * Each icon is a simple functional component accepting standard SVG props.
- * Using inline SVGs avoids adding an icon library dependency.
  */
 
 export function IconHome(props) {
@@ -33,6 +32,7 @@ export function IconCalendar(props) {
     </svg>
   );
 }
+export const CalendarIcon = IconCalendar;
 
 export function IconQueries(props) {
   return (
@@ -133,6 +133,7 @@ export function IconArrowRight(props) {
     </svg>
   );
 }
+export const ArrowRightIcon = IconArrowRight;
 
 export function IconClock(props) {
   return (
@@ -162,3 +163,78 @@ export function IconMapPin(props) {
   );
 }
 
+/* Landing Specific Icons */
+export function BellIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 01-3.46 0" />
+    </svg>
+  );
+}
+
+export function SparklesIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 3v3m0 12v3M3 12h3m12 0h3m-4.5-6.5l-2.12 2.12M7.62 16.38l-2.12 2.12m12.76 0l-2.12-2.12M7.62 7.62L5.5 5.5" />
+    </svg>
+  );
+}
+
+export function ShieldCheckIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function AcademicCapIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+    </svg>
+  );
+}
+
+export function ChatBubbleLeftRightIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M8 9h8M8 13h6" />
+      <path d="M18 4a3 3 0 013 3v8a3 3 0 01-3 3h-5l-4 4v-4H6a3 3 0 01-3-3V7a3 3 0 013-3h12z" />
+    </svg>
+  );
+}
+
+export function DocumentTextIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <line x1="10" y1="9" x2="8" y2="9" />
+    </svg>
+  );
+}
+
+export function CheckCircleIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
+}
+
+export function UserGroupIcon(props) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M17 21v-2a4 4 0 00-3-3.87M9 21v-2a4 4 0 013-3.87" />
+      <path d="M16 3.13a4 4 0 010 7.75" />
+      <circle cx="9" cy="7" r="4" />
+    </svg>
+  );
+}

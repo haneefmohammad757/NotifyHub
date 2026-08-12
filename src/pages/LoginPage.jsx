@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import Logo from '../components/Logo';
 import './AuthPage.css';
 
-/* Inline icons */
+/* Icons for fields and feature cards */
 const IconMail = () => (
   <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
     <rect x="2" y="4" width="20" height="16" rx="3" />
@@ -75,7 +75,7 @@ export default function LoginPage({ isAdmin = false }) {
     setError('');
 
     if (!email.trim()) {
-      setError('Please enter your email address.');
+      setError('Please enter your registered email address.');
       return;
     }
     if (!password) {
@@ -86,10 +86,10 @@ export default function LoginPage({ isAdmin = false }) {
     setSubmitting(true);
 
     try {
-      const user = await login(email.trim(), password, isAdmin ? 'ADMIN' : undefined);
+      const user = await login(email.trim(), password, isAdmin ? 'ADMIN' : 'STUDENT');
 
       if (isAdmin && user.role !== 'ADMIN') {
-        setError('Access denied. Administrator credentials required.');
+        setError('Access denied. Account does not have Administrator privileges.');
         setSubmitting(false);
         return;
       }
@@ -135,62 +135,167 @@ export default function LoginPage({ isAdmin = false }) {
   }
 
   return (
-    <div className={`auth-page ${isAdmin ? 'admin-theme' : 'student-theme'}`}>
-      <div className="auth-wrapper">
-        <div className="auth-card">
-          
-          {/* Card Header & Brand Logo */}
-          <div className="auth-card__header">
-            <div className="auth-card__logo">
-              <Logo to={isAdmin ? '/admin' : '/student'} isAdmin={isAdmin} showTagline={true} />
-            </div>
+    <div className="auth-split-page">
+      {/* Crisp Background Campus Image Overlay */}
+      <div className="auth-bg-overlay" />
 
-            <h1 className="auth-card__heading">
-              {isAdmin ? 'Admin Portal' : 'Welcome Back'}
-            </h1>
-            <p className="auth-card__subheading">
-              {isAdmin
-                ? 'Sign in to access the NotifyHub admin control panel.'
-                : 'Sign in to access your student dashboard & campus announcements.'}
-            </p>
+      <div className="auth-split-container">
+        
+        {/* Left Panel — Custom Punchlines & Features */}
+        <div className="auth-left-panel">
+          <div className="auth-left-header">
+            <Logo to="/" showTagline={false} />
+            <span className="auth-tagline-pills">NOTIFYHUB • CAMPUS INTELLIGENCE</span>
           </div>
 
-          {/* Form */}
-          <form className="auth-form" onSubmit={handleSubmit} noValidate>
-            {error && (
-              <div className="auth-error" role="alert">
-                <span className="auth-error__icon">⚠️</span>
-                <span>{error}</span>
-              </div>
-            )}
+          <div className="auth-left-hero">
+            <h1 className="auth-hero-title">
+              {isAdmin ? (
+                <>
+                  Admin Command Panel. <br />
+                  <span className="gradient-highlight">Manage Campus Live.</span>
+                </>
+              ) : (
+                <>
+                  Stay Informed. <br />
+                  <span className="gradient-highlight">Stay Ahead on Campus.</span>
+                </>
+              )}
+            </h1>
 
-            {/* Email Field */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="login-email">
-                {isAdmin ? 'Admin Email' : 'Email Address'}
-              </label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconMail /></span>
-                <input
-                  id="login-email"
-                  className="auth-field__input"
-                  type="email"
-                  placeholder={isAdmin ? 'admin@notifyhub.edu' : 'student@notifyhub.edu'}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
+            <p className="auth-hero-subtitle">
+              {isAdmin
+                ? 'Centralized administrative control panel to publish targeted announcements, schedule events, and resolve student support tickets.'
+                : 'Connecting students and campus administration with real-time circulars, event registrations, and instant support ticket resolution.'}
+            </p>
+
+            <div className="auth-quote-card">
+              <span className="quote-mark">“</span>
+              <p>Empowering every student with timely information and effortless campus engagement.</p>
+            </div>
+          </div>
+
+          {/* 4 Feature Mini-Cards */}
+          <div className="auth-feature-grid">
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon yellow">📢</div>
+              <div>
+                <h4>Targeted Circulars</h4>
+                <p>Filtered by dept & year</p>
               </div>
             </div>
 
-            {/* Password Field */}
-            <div className="auth-field">
-              <div className="auth-field__label-row">
-                <label className="auth-field__label" htmlFor="login-password">Password</label>
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon red">📅</div>
+              <div>
+                <h4>Event Calendar</h4>
+                <p>One-click registrations</p>
+              </div>
+            </div>
+
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon cyan">💬</div>
+              <div>
+                <h4>Instant Helpdesk</h4>
+                <p>Direct query resolution</p>
+              </div>
+            </div>
+
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon orange">🚨</div>
+              <div>
+                <h4>Urgent Alerts</h4>
+                <p>High-priority deadlines</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel — Professional Glass Login Card */}
+        <div className="auth-right-panel">
+          <div className="auth-glass-card">
+            
+            <div className="auth-card-title-box">
+              <div className="auth-card-emoji">👋</div>
+              <h2 className="auth-card-title">
+                Welcome <span className="blue-gradient-text">{isAdmin ? 'Admin' : 'Back'}</span>
+              </h2>
+              <p className="auth-card-subtitle">
+                {isAdmin
+                  ? 'Login to access administrative command panel'
+                  : 'Login to continue to your account'}
+              </p>
+            </div>
+
+            <form className="auth-form" onSubmit={handleSubmit} noValidate>
+              {error && (
+                <div className="auth-error-banner" role="alert">
+                  <span className="error-icon">⚠️</span>
+                  <span>{error}</span>
+                </div>
+              )}
+
+              {/* Email Field */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="login-email">
+                  {isAdmin ? 'Admin Email' : 'Email'}
+                </label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconMail /></span>
+                  <input
+                    id="login-email"
+                    className="auth-input"
+                    type="email"
+                    placeholder={isAdmin ? 'admin@notifyhub' : 'student@notifyhub.edu'}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="login-password">Password</label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconLock /></span>
+                  <input
+                    id="login-password"
+                    className="auth-input"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="auth-toggle-pass"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <IconEyeOff /> : <IconEye />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me & Forgot Password Row */}
+              <div className="auth-options-row">
+                <label className="auth-remember-label">
+                  <input
+                    type="checkbox"
+                    className="auth-checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span>Remember me</span>
+                </label>
+
                 <button
                   type="button"
-                  className="auth-forgot-link"
+                  className="auth-forgot-btn"
                   onClick={() => {
                     setResetEmail(email);
                     setResetError('');
@@ -198,72 +303,48 @@ export default function LoginPage({ isAdmin = false }) {
                     setShowForgotModal(true);
                   }}
                 >
-                  Forgot Password?
+                  Forgot password?
                 </button>
               </div>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconLock /></span>
-                <input
-                  id="login-password"
-                  className="auth-field__input"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  className="auth-field__toggle-password"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <IconEyeOff /> : <IconEye />}
-                </button>
+
+              {/* Submit Sign In Button */}
+              <button
+                className={`auth-submit-gradient ${isAdmin ? 'admin-gradient' : ''}`}
+                type="submit"
+                disabled={submitting}
+              >
+                <span>{submitting ? 'Signing in...' : (isAdmin ? 'Sign In to Control Panel' : 'Sign In')}</span>
+                <IconArrowRight />
+              </button>
+            </form>
+
+            {/* Student Create Account Link */}
+            {!isAdmin && (
+              <div className="auth-card-footer">
+                <div className="auth-divider">
+                  <span className="divider-line"></span>
+                  <span className="divider-text">or</span>
+                  <span className="divider-line"></span>
+                </div>
+
+                <Link to="/register" className="auth-create-account-btn">
+                  <IconUserPlus /> Create New Account
+                </Link>
+              </div>
+            )}
+
+            {/* Security Badge */}
+            <div className="auth-security-badge">
+              <span className="security-icon">🔒</span>
+              <div>
+                <strong>Secure. Private. Trusted.</strong>
+                <p>Your data is protected with enterprise-grade security.</p>
               </div>
             </div>
 
-            {/* Remember Me */}
-            <div className="auth-remember-row">
-              <label className="auth-remember">
-                <input
-                  type="checkbox"
-                  className="auth-remember__checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <span className="auth-remember__label">Remember me</span>
-              </label>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              className={`auth-submit ${isAdmin ? 'auth-submit--admin' : ''}`}
-              type="submit"
-              disabled={submitting}
-            >
-              <span>{submitting ? 'Signing in...' : (isAdmin ? 'Sign In to Dashboard' : 'Sign In')}</span>
-              <span className="auth-submit__arrow"><IconArrowRight /></span>
-            </button>
-          </form>
-
-          {/* Student Footer */}
-          {!isAdmin && (
-            <div className="auth-card__footer">
-              <div className="auth-divider">
-                <span className="auth-divider__line" />
-                <span className="auth-divider__text">Don't have an account?</span>
-                <span className="auth-divider__line" />
-              </div>
-
-              <Link to="/register" className="auth-secondary-btn">
-                <IconUserPlus /> Create Student Account
-              </Link>
-            </div>
-          )}
-
+          </div>
         </div>
+
       </div>
 
       {/* Forgot Password Modal */}
@@ -286,10 +367,10 @@ export default function LoginPage({ isAdmin = false }) {
 
             {resetSuccess ? (
               <div className="auth-modal-card__body">
-                <div className="auth-success">{resetSuccess}</div>
+                <div className="auth-success-banner">{resetSuccess}</div>
                 <button
                   type="button"
-                  className="auth-submit"
+                  className="auth-submit-gradient"
                   onClick={() => setShowForgotModal(false)}
                   style={{ marginTop: '1.25rem', width: '100%' }}
                 >
@@ -298,16 +379,16 @@ export default function LoginPage({ isAdmin = false }) {
               </div>
             ) : (
               <form onSubmit={handleResetPassword} className="auth-modal-form" noValidate>
-                {resetError && <div className="auth-error">{resetError}</div>}
+                {resetError && <div className="auth-error-banner">{resetError}</div>}
 
-                <div className="auth-field">
-                  <label className="auth-field__label">Registered Email</label>
-                  <div className="auth-field__input-wrapper">
-                    <span className="auth-field__input-icon"><IconMail /></span>
+                <div className="auth-form-group">
+                  <label className="auth-label">Registered Email</label>
+                  <div className="auth-input-wrapper">
+                    <span className="auth-input-icon"><IconMail /></span>
                     <input
                       type="email"
-                      className="auth-field__input"
-                      placeholder={isAdmin ? 'admin@notifyhub.edu' : 'student@notifyhub.edu'}
+                      className="auth-input"
+                      placeholder={isAdmin ? 'admin@notifyhub' : 'student@notifyhub.edu'}
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
                       required
@@ -315,13 +396,13 @@ export default function LoginPage({ isAdmin = false }) {
                   </div>
                 </div>
 
-                <div className="auth-field">
-                  <label className="auth-field__label">New Password</label>
-                  <div className="auth-field__input-wrapper">
-                    <span className="auth-field__input-icon"><IconLock /></span>
+                <div className="auth-form-group">
+                  <label className="auth-label">New Password</label>
+                  <div className="auth-input-wrapper">
+                    <span className="auth-input-icon"><IconLock /></span>
                     <input
                       type={resetShowPass ? 'text' : 'password'}
-                      className="auth-field__input"
+                      className="auth-input"
                       placeholder="Minimum 6 characters"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
@@ -329,7 +410,7 @@ export default function LoginPage({ isAdmin = false }) {
                     />
                     <button
                       type="button"
-                      className="auth-field__toggle-password"
+                      className="auth-toggle-pass"
                       onClick={() => setResetShowPass(!resetShowPass)}
                     >
                       {resetShowPass ? <IconEyeOff /> : <IconEye />}
@@ -337,13 +418,13 @@ export default function LoginPage({ isAdmin = false }) {
                   </div>
                 </div>
 
-                <div className="auth-field">
-                  <label className="auth-field__label">Confirm New Password</label>
-                  <div className="auth-field__input-wrapper">
-                    <span className="auth-field__input-icon"><IconLock /></span>
+                <div className="auth-form-group">
+                  <label className="auth-label">Confirm New Password</label>
+                  <div className="auth-input-wrapper">
+                    <span className="auth-input-icon"><IconLock /></span>
                     <input
                       type={resetShowPass ? 'text' : 'password'}
-                      className="auth-field__input"
+                      className="auth-input"
                       placeholder="Re-enter password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -362,7 +443,7 @@ export default function LoginPage({ isAdmin = false }) {
                   </button>
                   <button
                     type="submit"
-                    className="auth-submit"
+                    className="auth-submit-gradient"
                     style={{ flex: 1 }}
                     disabled={resetting}
                   >

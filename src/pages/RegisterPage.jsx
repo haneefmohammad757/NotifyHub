@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import Logo from '../components/Logo';
 import './AuthPage.css';
 
-/* Inline icons */
+/* Icons */
 const IconMail = () => (
   <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
     <rect x="2" y="4" width="20" height="16" rx="3" />
@@ -75,10 +75,10 @@ export default function RegisterPage() {
   const [department, setDepartment] = useState('CSE');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -86,8 +86,24 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (!name.trim() || !email.trim() || !rollNo.trim() || !password || !confirmPassword) {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const cleanedRoll = rollNo.trim().toUpperCase();
+
+    if (!trimmedName || !trimmedEmail || !cleanedRoll || !password || !confirmPassword) {
       setError('Please fill in all required fields.');
+      return;
+    }
+
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!EMAIL_REGEX.test(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    const ROLL_NO_REGEX = /^[0-9]{2}[A-Z0-9]{8}$/;
+    if (!ROLL_NO_REGEX.test(cleanedRoll)) {
+      setError('Invalid Roll Number format. Example: 21891A0501 (Expected 10-character code).');
       return;
     }
 
@@ -101,225 +117,279 @@ export default function RegisterPage() {
       return;
     }
 
-    const cleanedRoll = rollNo.trim().toUpperCase();
-    const ROLL_NO_REGEX = /^[0-9]{2}89[15]A[0-9]{4}$/;
-    
-    if (!ROLL_NO_REGEX.test(cleanedRoll)) {
-      setError('Invalid Roll Number format. Example: 21891A0501 (Format: [Year][89][1 or 5][A][4 digits]).');
-      return;
-    }
-
     setSubmitting(true);
     try {
-      await register(name.trim(), email.trim(), password, cleanedRoll, year, department);
+      await register(trimmedName, trimmedEmail, password, cleanedRoll, year, department);
       navigate('/student', { replace: true });
     } catch (err) {
-      setError(err.message || 'Registration failed.');
+      setError(err.message || 'Registration failed. Please check your details.');
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="auth-page student-theme">
-      <div className="auth-wrapper" style={{ maxWidth: '480px' }}>
-        <div className="auth-card">
-          
-          <div className="auth-card__header">
-            <div className="auth-card__logo">
-              <Logo to="/student" showTagline={true} />
-            </div>
+    <div className="auth-split-page">
+      <div className="auth-bg-overlay" />
 
-            <h1 className="auth-card__heading">Create Account</h1>
-            <p className="auth-card__subheading">
-              Register your NotifyHub student profile to receive department & year circulars.
-            </p>
+      <div className="auth-split-container">
+        
+        {/* Left Panel */}
+        <div className="auth-left-panel">
+          <div className="auth-left-header">
+            <Logo to="/" showTagline={false} />
+            <span className="auth-tagline-pills">CONNECT • INFORM • EMPOWER</span>
           </div>
 
-          <form className="auth-form" onSubmit={handleSubmit} noValidate>
-            {error && (
-              <div className="auth-error" role="alert">
-                <span className="auth-error__icon">⚠️</span>
-                <span>{error}</span>
-              </div>
-            )}
+          <div className="auth-hero-content">
+            <h1 className="auth-hero-title">
+              Join Your Campus <br />
+              <span className="gradient-highlight">Notification Hub.</span>
+            </h1>
 
-            {/* Full Name */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-name">Full Name</label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconUser /></span>
-                <input
-                  id="reg-name"
-                  className="auth-field__input"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  autoComplete="name"
-                />
+            <p className="auth-hero-subtitle">
+              Register your student profile to automatically receive targeted circulars, event alerts, and query updates filtered for your department and year.
+            </p>
+
+            <div className="auth-quote-card">
+              <span className="quote-mark">“</span>
+              <p>Never miss a crucial exam deadline, placement drive, or campus announcement again.</p>
+            </div>
+          </div>
+
+          {/* 4 Feature Cards */}
+          <div className="auth-feature-grid">
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon yellow">🔔</div>
+              <div>
+                <h4>Real-Time Notifications</h4>
+                <p>Instant updates</p>
               </div>
             </div>
 
-            {/* Email Address */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-email">Email Address</label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconMail /></span>
-                <input
-                  id="reg-email"
-                  className="auth-field__input"
-                  type="email"
-                  placeholder="student@notifyhub.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon red">📅</div>
+              <div>
+                <h4>Events & Calendars</h4>
+                <p>Never miss out</p>
               </div>
             </div>
 
-            {/* Roll Number */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-roll">
-                Roll Number <span style={{ fontWeight: 'normal', color: 'var(--auth-text-dim)', fontSize: '0.75rem' }}>(Format: 21891A0501)</span>
-              </label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconId /></span>
-                <input
-                  id="reg-roll"
-                  className="auth-field__input"
-                  type="text"
-                  placeholder="e.g. 21891A0501"
-                  value={rollNo}
-                  onChange={(e) => setRollNo(e.target.value.toUpperCase().slice(0, 10))}
-                  maxLength={10}
-                  required
-                />
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon cyan">💬</div>
+              <div>
+                <h4>Student Queries</h4>
+                <p>Get answers fast</p>
               </div>
             </div>
 
-            {/* Year & Department Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              {/* Year */}
-              <div className="auth-field">
-                <label className="auth-field__label" htmlFor="reg-year">Academic Year</label>
-                <div className="auth-field__input-wrapper">
-                  <span className="auth-field__input-icon"><IconAcademic /></span>
-                  <select
-                    id="reg-year"
-                    className="auth-field__input"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    style={{ appearance: 'none', cursor: 'pointer' }}
-                  >
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Department */}
-              <div className="auth-field">
-                <label className="auth-field__label" htmlFor="reg-dept">Department</label>
-                <div className="auth-field__input-wrapper">
-                  <span className="auth-field__input-icon"><IconAcademic /></span>
-                  <select
-                    id="reg-dept"
-                    className="auth-field__input"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    style={{ appearance: 'none', cursor: 'pointer' }}
-                  >
-                    <option value="CSE">CSE</option>
-                    <option value="ECE">ECE</option>
-                    <option value="EEE">EEE</option>
-                    <option value="MECH">MECH</option>
-                    <option value="CIVIL">CIVIL</option>
-                    <option value="IT">IT</option>
-                    <option value="AI&DS">AI&amp;DS</option>
-                  </select>
-                </div>
+            <div className="feature-mini-card">
+              <div className="feature-mini-icon orange">📢</div>
+              <div>
+                <h4>Announcements</h4>
+                <p>Stay in the loop</p>
               </div>
             </div>
-
-            {/* Password */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-password">Password</label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconLock /></span>
-                <input
-                  id="reg-password"
-                  className="auth-field__input"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="At least 6 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  className="auth-field__toggle-password"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <IconEyeOff /> : <IconEye />}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm Password */}
-            <div className="auth-field">
-              <label className="auth-field__label" htmlFor="reg-confirm">Confirm Password</label>
-              <div className="auth-field__input-wrapper">
-                <span className="auth-field__input-icon"><IconLock /></span>
-                <input
-                  id="reg-confirm"
-                  className="auth-field__input"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Re-enter password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  className="auth-field__toggle-password"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showConfirmPassword ? <IconEyeOff /> : <IconEye />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              className="auth-submit"
-              type="submit"
-              disabled={submitting}
-            >
-              <span>{submitting ? 'Creating account...' : 'Create Account'}</span>
-              <span className="auth-submit__arrow"><IconArrowRight /></span>
-            </button>
-          </form>
-
-          <div className="auth-card__footer">
-            <div className="auth-divider">
-              <span className="auth-divider__line" />
-              <span className="auth-divider__text">Already have an account?</span>
-              <span className="auth-divider__line" />
-            </div>
-
-            <Link to="/login" className="auth-secondary-btn">
-              Sign In to Existing Account
-            </Link>
           </div>
         </div>
+
+        {/* Right Panel — Glass Register Card */}
+        <div className="auth-right-panel">
+          <div className="auth-glass-card" style={{ maxWidth: '480px' }}>
+            
+            <div className="auth-card-title-box">
+              <div className="auth-card-emoji">🚀</div>
+              <h2 className="auth-card-title">
+                Create <span className="blue-gradient-text">Account</span>
+              </h2>
+              <p className="auth-card-subtitle">
+                Fill in your student credentials to get started
+              </p>
+            </div>
+
+            <form className="auth-form" onSubmit={handleSubmit} noValidate>
+              {error && (
+                <div className="auth-error-banner" role="alert">
+                  <span className="error-icon">⚠️</span>
+                  <span>{error}</span>
+                </div>
+              )}
+
+              {/* Full Name */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="reg-name">Full Name</label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconUser /></span>
+                  <input
+                    id="reg-name"
+                    className="auth-input"
+                    type="text"
+                    placeholder="e.g. Yash Kumar"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    autoComplete="name"
+                  />
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="reg-email">Email Address</label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconMail /></span>
+                  <input
+                    id="reg-email"
+                    className="auth-input"
+                    type="email"
+                    placeholder="student@notifyhub.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+
+              {/* Roll Number */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="reg-roll">
+                  Roll Number <span style={{ fontWeight: 'normal', color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.75rem' }}>(Format: 21891A0501)</span>
+                </label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconId /></span>
+                  <input
+                    id="reg-roll"
+                    className="auth-input"
+                    type="text"
+                    placeholder="e.g. 21891A0501"
+                    value={rollNo}
+                    onChange={(e) => setRollNo(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10))}
+                    maxLength={10}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Year & Department Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div className="auth-form-group">
+                  <label className="auth-label" htmlFor="reg-year">Academic Year</label>
+                  <div className="auth-input-wrapper">
+                    <span className="auth-input-icon"><IconAcademic /></span>
+                    <select
+                      id="reg-year"
+                      className="auth-input"
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                      style={{ appearance: 'none', cursor: 'pointer' }}
+                    >
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="auth-form-group">
+                  <label className="auth-label" htmlFor="reg-dept">Department</label>
+                  <div className="auth-input-wrapper">
+                    <span className="auth-input-icon"><IconAcademic /></span>
+                    <select
+                      id="reg-dept"
+                      className="auth-input"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      style={{ appearance: 'none', cursor: 'pointer' }}
+                    >
+                      <option value="CSE">CSE</option>
+                      <option value="ECE">ECE</option>
+                      <option value="EEE">EEE</option>
+                      <option value="MECH">MECH</option>
+                      <option value="CIVIL">CIVIL</option>
+                      <option value="IT">IT</option>
+                      <option value="AI&DS">AI&amp;DS</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="reg-password">Password</label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconLock /></span>
+                  <input
+                    id="reg-password"
+                    className="auth-input"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="At least 6 characters"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="auth-toggle-pass"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <IconEyeOff /> : <IconEye />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm Password */}
+              <div className="auth-form-group">
+                <label className="auth-label" htmlFor="reg-confirm">Confirm Password</label>
+                <div className="auth-input-wrapper">
+                  <span className="auth-input-icon"><IconLock /></span>
+                  <input
+                    id="reg-confirm"
+                    className="auth-input"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="Re-enter password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="auth-toggle-pass"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <IconEyeOff /> : <IconEye />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                className="auth-submit-gradient"
+                type="submit"
+                disabled={submitting}
+              >
+                <span>{submitting ? 'Creating account...' : 'Create Account'}</span>
+                <IconArrowRight />
+              </button>
+            </form>
+
+            <div className="auth-card-footer">
+              <div className="auth-divider">
+                <span className="divider-line"></span>
+                <span className="divider-text">Already registered?</span>
+                <span className="divider-line"></span>
+              </div>
+
+              <Link to="/login" className="auth-create-account-btn">
+                Sign In to Existing Account
+              </Link>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   );

@@ -42,8 +42,8 @@ router.post('/register', async (req, res, next) => {
       return res.status(400).json({ error: 'Password must be at least 6 characters.' });
     }
 
-    if (rollNo && !/^[0-9]{2}89[15]A[0-9]{4}$/i.test(rollNo.trim())) {
-      return res.status(400).json({ error: 'Invalid Roll Number format. Expected 10-character code like 21891A0501 (Format: [Year][89][1 or 5][A][4 digits]).' });
+    if (rollNo && !/^[0-9]{2}[A-Z0-9]{8}$/i.test(rollNo.trim())) {
+      return res.status(400).json({ error: 'Invalid Roll Number format. Expected 10-character code like 21891A0501.' });
     }
 
     // Check for existing account
