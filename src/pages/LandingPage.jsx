@@ -98,10 +98,6 @@ export default function LandingPage() {
             </nav>
 
             <div className="landing-nav-cta">
-              <button onClick={handleDownloadApp} className="nav-btn-app" title="Download NotifyHub App">
-                <PhoneDownloadIcon className="btn-icon" />
-                <span>{isInstalled ? 'App Ready' : 'Download App'}</span>
-              </button>
               <Link to="/login" className="nav-btn-login">
                 Student Login
               </Link>
@@ -130,7 +126,7 @@ export default function LandingPage() {
           <div className="hero-action-buttons">
             <button onClick={handleDownloadApp} className="hero-app-btn">
               <PhoneDownloadIcon className="btn-icon" />
-              <span>{isInstalled ? 'Mobile App Installed' : 'Download Mobile App'}</span>
+              <span>Download App</span>
             </button>
             <Link to="/login" className="hero-main-btn">
               <BellIcon className="btn-icon" /> Access Student Hub
