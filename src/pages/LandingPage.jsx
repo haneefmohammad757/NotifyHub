@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { usePWAInstall } from '../hooks/usePWAInstall';
 import { 
   BellIcon, 
   SparklesIcon, 
@@ -14,8 +15,18 @@ import {
 } from '../components/Icons';
 import './LandingPage.css';
 
+function PhoneDownloadIcon(props) {
+  return (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zM12 6v6m0 0l-2-2m2 2l2-2" />
+    </svg>
+  );
+}
+
 export default function LandingPage() {
   const [animationStage, setAnimationStage] = useState('initial'); // 'initial' -> 'flying' -> 'settled'
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
+  const { isInstalled, isIOS, triggerInstall } = usePWAInstall();
 
   useEffect(() => {
     // Phase 1 (1.5s dot -> big) + Phase 2 (1.5s stay still) = 3.0s total before flying
@@ -33,6 +44,13 @@ export default function LandingPage() {
       clearTimeout(timer2);
     };
   }, []);
+
+  const handleDownloadApp = async () => {
+    const success = await triggerInstall();
+    if (!success) {
+      setShowInstallGuide(true);
+    }
+  };
 
   return (
     <div className="landing-page-container">
@@ -80,6 +98,10 @@ export default function LandingPage() {
             </nav>
 
             <div className="landing-nav-cta">
+              <button onClick={handleDownloadApp} className="nav-btn-app" title="Download NotifyHub App">
+                <PhoneDownloadIcon className="btn-icon" />
+                <span>{isInstalled ? 'App Ready' : 'Download App'}</span>
+              </button>
               <Link to="/login" className="nav-btn-login">
                 Student Login
               </Link>
@@ -106,6 +128,10 @@ export default function LandingPage() {
           </p>
 
           <div className="hero-action-buttons">
+            <button onClick={handleDownloadApp} className="hero-app-btn">
+              <PhoneDownloadIcon className="btn-icon" />
+              <span>{isInstalled ? 'Mobile App Installed' : 'Download Mobile App'}</span>
+            </button>
             <Link to="/login" className="hero-main-btn">
               <BellIcon className="btn-icon" /> Access Student Hub
             </Link>
@@ -120,6 +146,58 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* PWA Mobile App Download Guide Modal */}
+      {showInstallGuide && (
+        <div className="pwa-guide-overlay" onClick={() => setShowInstallGuide(false)}>
+          <div className="pwa-guide-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="pwa-guide-close" onClick={() => setShowInstallGuide(false)} aria-label="Close">
+              ✕
+            </button>
+
+            <div className="pwa-guide-header">
+              <div className="pwa-guide-icon-badge">
+                <img src="/pwa-192x192.png" alt="NotifyHub App" className="pwa-app-icon" />
+              </div>
+              <h3 className="pwa-guide-title">Download NotifyHub App</h3>
+              <p className="pwa-guide-subtitle">Install NotifyHub on your phone home screen for instant circular alerts & offline access.</p>
+            </div>
+
+            <div className="pwa-guide-steps">
+              {isIOS ? (
+                <div className="pwa-step-item">
+                  <span className="step-num">1</span>
+                  <div>
+                    <strong>iPhone / iOS Instructions:</strong>
+                    <p>Tap the <strong>Share</strong> button (square with an up arrow) in Safari bottom bar, then tap <strong>Add to Home Screen</strong>.</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="pwa-step-item">
+                    <span className="step-num">1</span>
+                    <div>
+                      <strong>Mobile Chrome / Android:</strong>
+                      <p>Tap Chrome menu <strong>(⋮)</strong> in top right corner of browser.</p>
+                    </div>
+                  </div>
+                  <div className="pwa-step-item">
+                    <span className="step-num">2</span>
+                    <div>
+                      <strong>Tap "Install App" or "Add to Home Screen":</strong>
+                      <p>NotifyHub will install directly as a native app on your phone!</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <button className="pwa-guide-confirm-btn" onClick={() => setShowInstallGuide(false)}>
+              Got it, thanks!
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Section 1: About & Purpose (Informative Section) */}
       <section id="about" className="landing-section-block">

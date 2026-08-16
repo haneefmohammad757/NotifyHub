@@ -1,0 +1,26 @@
+{
+  "name": "NotifyHub — Campus Mobile App",
+  "short_name": "NotifyHub",
+  "description": "Unified digital campus circulars, exam timetables, placement alerts, and student support desk.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070c17",
+  "theme_color": "#6C5CE7",
+  "categories": ["education", "campus", "utilities"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -125,7 +125,13 @@ export default function StudentCalendar() {
       {/* Desktop Grid View */}
       <div className="calendar-grid-wrapper">
         <div className="calendar-grid-header">
-          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          <div><span className="day-full">Sun</span><span className="day-short">S</span></div>
+          <div><span className="day-full">Mon</span><span className="day-short">M</span></div>
+          <div><span className="day-full">Tue</span><span className="day-short">T</span></div>
+          <div><span className="day-full">Wed</span><span className="day-short">W</span></div>
+          <div><span className="day-full">Thu</span><span className="day-short">T</span></div>
+          <div><span className="day-full">Fri</span><span className="day-short">F</span></div>
+          <div><span className="day-full">Sat</span><span className="day-short">S</span></div>
         </div>
         <div className="calendar-grid">
           {blanks.map((_, i) => (

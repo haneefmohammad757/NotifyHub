@@ -143,6 +143,9 @@
 .calendar-grid-header > div:first-child { color: rgba(255, 100, 100, 0.8); }  /* Sun */
 .calendar-grid-header > div:last-child { color: rgba(100, 180, 255, 0.8); }   /* Sat */
 
+.calendar-grid-header .day-short { display: none; }
+.calendar-grid-header .day-full { display: inline; }
+
 /* --- Calendar Grid --- */
 .calendar-grid {
   display: grid;

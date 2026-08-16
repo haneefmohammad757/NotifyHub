@@ -1,497 +1,804 @@
-/* ============================================
-   NotifyHub — Mobile Responsiveness
-   Comprehensive media queries for all screens
-   ============================================ */
+/* ============================================================
+   NotifyHub — Master Mobile Responsiveness & Polish
+   Enforces a premium, native-feeling mobile experience while
+   leaving Desktop (> 1024px) 100% untouched and undisturbed.
+   ============================================================ */
 
-/* ─── Auth Page ────────────────────────────── */
-@media (max-width: 768px) {
-  .auth-page {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
+/* ─── Global Mobile Utilities & Reset ──────────────────────── */
+@media (max-width: 1024px) {
+  html, body {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .auth-hero {
+  /* Prevent iOS Safari input auto-zooming by enforcing 16px minimum font size */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ─── Landing Page Mobile Polish ───────────────────────────── */
+@media (max-width: 768px) {
+  .landing-navbar-inner {
+    padding: 0.75rem 1rem;
+  }
+
+  .landing-brand-group {
+    gap: 0.5rem;
+  }
+
+  .vignan-logo-img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .brand-divider {
+    height: 18px;
+    margin: 0;
+  }
+
+  .landing-nav-menu {
     display: none;
   }
 
-  .auth-panel {
-    padding: 2rem 1.5rem;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+  .landing-nav-cta {
+    gap: 0.5rem;
+  }
+
+  .nav-btn-login {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .nav-btn-register {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .landing-hero-content {
+    margin: 2.5rem auto 3.5rem auto;
+    padding: 0 1rem;
+  }
+
+  .hero-badge {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-action-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-main-btn,
+  .hero-secondary-btn {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .hero-trust-banner {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.82rem;
+    padding: 0.65rem 1rem;
+    text-align: center;
     justify-content: center;
   }
 
-  .auth-panel__card {
-    width: 100%;
-    max-width: 420px;
-    padding: 2rem 1.5rem;
+  .landing-section-block {
+    padding: 3.5rem 1rem;
   }
 
-  .auth-panel__title {
-    font-size: 1.6rem;
+  .landing-section-header {
+    margin-bottom: 2.25rem;
+  }
+
+  .section-heading-title {
+    font-size: 1.85rem;
+  }
+
+  .section-heading-sub {
+    font-size: 0.95rem;
+  }
+
+  .info-cards-grid,
+  .modules-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .info-card-item,
+  .module-card,
+  .benefit-item {
+    padding: 1.35rem 1.15rem;
+    border-radius: 16px;
+  }
+
+  .benefit-item {
+    gap: 1rem;
+  }
+
+  .benefit-number {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.25rem;
+  }
+
+  .landing-professional-footer {
+    padding: 3rem 1rem 2rem 1rem;
+  }
+
+  .footer-quick-links {
+    gap: 1rem;
+    margin-bottom: 1.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  .auth-panel {
-    padding: 1.25rem 1rem;
-    align-items: flex-start;
-    padding-top: 3rem;
+  .hero-title {
+    font-size: 1.8rem;
   }
 
-  .auth-panel__card {
-    padding: 1.5rem 1.25rem;
-    border-radius: 16px;
+  .nav-btn-login span,
+  .nav-btn-register .btn-icon {
+    display: none;
+  }
+}
+
+/* ─── Vignan Logo Mobile Glide Fix ─────────────────────────── */
+@media (max-width: 768px) {
+  @keyframes bigLogoGlideToHeader {
+    0% {
+      opacity: 1;
+      transform: scale(1.3) translate(0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-30vw, -44vh) scale(0.18);
+      filter: blur(2px);
+    }
+  }
+}
+
+/* ─── Auth Page (Login & Register) Mobile Polish ────────────── */
+@media (max-width: 992px) {
+  .auth-split-container {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding: 2rem 1.25rem;
   }
 
-  .auth-panel__title {
-    font-size: 1.4rem;
+  .auth-left-panel {
+    text-align: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .auth-quote-card,
+  .auth-feature-grid {
+    display: none; /* Hide dense quotes & mini-cards on mobile so login card is front & center */
+  }
+
+  .auth-hero-title {
+    font-size: 2.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .auth-hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .auth-right-panel {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .auth-glass-card {
+    max-width: 100%;
+    padding: 1.75rem 1.35rem;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-split-container {
+    padding: 1.25rem 0.85rem;
+  }
+
+  .auth-left-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .auth-hero-title {
+    font-size: 1.75rem;
+  }
+
+  .auth-card-title {
+    font-size: 1.5rem;
   }
 
   .auth-form-row {
     grid-template-columns: 1fr !important;
   }
 
-  .auth-modal-actions {
-    flex-direction: column;
+  .auth-input {
+    height: 48px;
+  }
+
+  .auth-submit-gradient {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .auth-options-row {
+    flex-direction: row;
+    gap: 0.5rem;
   }
 }
 
-/* ─── Admin Layout Mobile ───────────────────── */
-@media (max-width: 1024px) {
-  .admin-topbar__profile .admin-topbar__info {
+/* ─── Student Mobile Navigation (Floating Bottom Bar) ───────── */
+@media (max-width: 768px) {
+  .student-nav-desktop {
+    display: none !important;
+  }
+
+  .student-nav-mobile {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: calc(60px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: max(6px, env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(223, 226, 237, 0.8);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .nav-link--bottom {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 6px 2px;
+    text-decoration: none;
+    color: var(--text-tertiary, #9498B1);
+    font-size: 0.68rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .nav-link--bottom .nav-link__icon {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+  }
+
+  .nav-link--bottom.nav-link--active {
+    color: var(--accent, #6C5CE7);
+  }
+
+  .nav-link--bottom.nav-link--active .nav-link__icon {
+    transform: translateY(-2px) scale(1.12);
+    color: var(--accent, #6C5CE7);
+  }
+
+  .nav-link--bottom.nav-link--active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    background: var(--accent, #6C5CE7);
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.5);
+  }
+
+  .student-main {
+    padding: var(--space-5) var(--space-4) !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-header {
+    padding: 0 var(--space-3) !important;
+    height: 56px;
+  }
+
+  .student-user-name {
     display: none;
   }
 
-  .admin-topbar {
-    padding: 0 var(--space-4);
+  .student-user-badge {
+    padding: 0.2rem;
+    border: none;
+    background: transparent;
+  }
+
+  .student-logout-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.72rem;
   }
 }
 
-@media (max-width: 640px) {
-  .admin-main {
-    padding: var(--space-4) var(--space-3) !important;
+/* ─── Touch Popovers (Urgent & Notification Dropdowns) ──────── */
+@media (max-width: 480px) {
+  .urgent-dropdown,
+  .notification-dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 24px) !important;
+    max-width: 380px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 1000 !important;
+  }
+}
+
+/* ─── Student Home Mobile Polish ────────────────────────────── */
+@media (max-width: 768px) {
+  .sh-root {
+    padding-bottom: var(--space-8);
   }
 
-  .admin-topbar__title {
+  .sh-campus-box__content {
+    padding: 1.25rem 1rem !important;
+    gap: 0.85rem;
+  }
+
+  .sh-campus-box__icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.5rem;
+  }
+
+  .sh-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .sh-page-title {
+    font-size: 1.6rem !important;
+  }
+
+  .sh-search-wrap {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  .sh-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1.75rem;
+  }
+
+  .sh-stat {
+    padding: 1rem !important;
+    border-radius: 14px;
+  }
+
+  .sh-stat__value {
+    font-size: 1.5rem !important;
+  }
+
+  .sh-stat__label {
+    font-size: 0.65rem !important;
+  }
+
+  .sh-content-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  .sh-ann-row {
+    padding: 0.85rem 1rem !important;
+    gap: 0.75rem;
+  }
+
+  .sh-event-card {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .sh-urgent-card {
+    padding: 0.85rem 1rem !important;
+  }
+}
+
+/* ─── Student Discover Filter Scroll Bar ────────────────────── */
+@media (max-width: 768px) {
+  .student-discover {
+    padding: 1rem 0;
+  }
+
+  .discover-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .discover-filters {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px;
+    border-radius: 12px;
+    gap: 4px;
+  }
+
+  .discover-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .discover-sort {
+    justify-content: space-between;
+  }
+
+  .discover-card {
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .discover-card__action {
+    display: none;
+  }
+}
+
+/* ─── Student Calendar Mobile Grid & List ───────────────────── */
+@media (max-width: 768px) {
+  .student-calendar {
+    padding: 0.5rem 0;
+  }
+
+  .calendar-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    padding: 1rem;
+  }
+
+  .calendar-nav {
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  .calendar-nav .btn--secondary {
+    flex: 1;
+    text-align: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.78rem;
+  }
+
+  .calendar-current-month {
+    text-align: center;
+    font-size: 1.35rem;
+  }
+
+  .calendar-filters {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .calendar-grid-header > div {
+    padding: 6px 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+
+  .calendar-grid-header .day-short { display: inline !important; }
+  .calendar-grid-header .day-full { display: none !important; }
+
+  .calendar-cell {
+    min-height: 52px;
+    padding: 4px 2px;
+  }
+
+  .calendar-cell__date {
+    width: 22px;
+    height: 22px;
     font-size: 0.75rem;
-    letter-spacing: 0.03em;
+    margin: 0 auto 2px auto;
+  }
+
+  .calendar-cell__events {
+    align-items: center;
+    gap: 2px;
+  }
+
+  .calendar-event {
+    padding: 0;
+    background: none !important;
+    border-left: none !important;
+  }
+
+  .calendar-event__title {
+    display: none;
+  }
+
+  /* Compact event dots for 7-column calendar grid on mobile */
+  .calendar-event::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .calendar-event--event::after {
+    background: #6C5CE7;
+    box-shadow: 0 0 6px rgba(108, 92, 231, 0.6);
+  }
+
+  .calendar-event--announcement::after {
+    background: #FF9F43;
+    box-shadow: 0 0 6px rgba(255, 159, 67, 0.6);
+  }
+
+  .calendar-event__more {
+    font-size: 0.55rem;
+    padding: 0 2px;
+  }
+
+  .calendar-events-section {
+    padding: 1.25rem 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .calendar-event-row {
+    padding: 0.85rem;
+    gap: 0.85rem;
+  }
+
+  .calendar-event-row__date-badge {
+    width: 42px;
+    height: 42px;
+  }
+
+  .calendar-event-row__day {
+    font-size: 1.1rem;
   }
 }
 
-/* ─── Admin Overview ────────────────────────── */
+/* ─── Student Queries Mobile Polish ─────────────────────────── */
+@media (max-width: 768px) {
+  .student-queries {
+    gap: 1.5rem;
+    padding: 0.5rem 0;
+  }
+
+  .student-queries__form-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .query-card {
+    padding: 1.15rem 1rem;
+  }
+
+  .query-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .query-card__message,
+  .query-card__response {
+    padding: 0.85rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ─── Admin Layout & Mobile Off-Canvas Sidebar ──────────────── */
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 270px !important;
+    max-width: 82vw !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .admin-sidebar--open {
+    transform: translateX(0) !important;
+  }
+
+  .admin-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 14, 20, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+  }
+
+  .admin-mobile-header {
+    display: flex !important;
+    height: 56px;
+    padding: 0 1rem;
+  }
+
+  .admin-body {
+    margin-left: 0 !important;
+  }
+
+  .admin-topbar {
+    display: none !important;
+  }
+
+  .admin-main {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
+/* ─── Admin Overview & Stat Cards Mobile Polish ─────────────── */
 @media (max-width: 640px) {
   .admin-overview__welcome {
-    padding: var(--space-5) var(--space-4) !important;
-    min-height: 100px;
-  }
-
-  .admin-overview__welcome h2 {
-    font-size: var(--text-lg) !important;
-  }
-
-  .admin-overview__welcome p {
-    font-size: var(--text-xs);
-  }
-
-  .admin-stat-card {
-    padding: var(--space-4);
-  }
-
-  .admin-stat-card__value {
-    font-size: 2rem;
+    padding: 1.25rem 1rem !important;
   }
 
   .admin-overview__stats {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: var(--space-3);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
   }
 
-  .admin-stat-card__label {
-    font-size: 0.65rem;
+  .admin-stat-card {
+    padding: 1rem !important;
+    border-radius: 14px;
   }
 
-  .admin-quick-action {
-    padding: var(--space-3) var(--space-4);
-    gap: var(--space-3);
-  }
-
-  .admin-quick-action__icon {
-    width: 34px;
-    height: 34px;
-    font-size: 0.95rem;
+  .admin-stat-card__value {
+    font-size: 1.6rem !important;
   }
 }
 
 @media (max-width: 380px) {
   .admin-overview__stats {
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: 1fr !important;
   }
 }
 
-/* ─── Admin Announcements / Events Table ────── */
+/* ─── Admin Tables & Modals Mobile Polish ────────────────────── */
 @media (max-width: 768px) {
-  .admin-announcements__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-  }
-
-  .admin-announcements__header .admin-btn-primary {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .admin-form-row {
-    grid-template-columns: 1fr !important;
+  .admin-table-container {
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .admin-table {
-    table-layout: auto;
-    min-width: 600px;
+    min-width: 680px;
+    table-layout: auto !important;
   }
 
-  .admin-modal {
-    max-width: 100%;
-    max-height: 95vh;
-    border-radius: var(--radius-md);
-  }
-
-  .admin-modal__header {
-    padding: 1.25rem 1.25rem;
-  }
-
-  .admin-form {
-    padding: 1.25rem;
-  }
-
-  .admin-modal__footer {
-    padding: 1rem 1.25rem;
+  .admin-table th,
+  .admin-table td {
+    padding: 0.75rem 0.65rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
-@media (max-width: 480px) {
-  .admin-modal__footer {
-    flex-direction: column-reverse;
+/* ─── Bottom-Sheet Presentation for Modals (< 640px) ────────── */
+@media (max-width: 640px) {
+  .student-modal-overlay,
+  .admin-modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+    background-color: rgba(7, 12, 23, 0.75) !important;
   }
 
+  .student-modal,
+  .admin-modal {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 88vh !important;
+    border-radius: 24px 24px 0 0 !important;
+    border-bottom: none !important;
+    transform: none !important;
+    animation: slideUpBottomSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4) !important;
+    position: relative;
+  }
+
+  .student-modal::before,
+  .admin-modal::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: rgba(148, 163, 184, 0.4);
+    border-radius: 4px;
+    margin: 8px auto 4px auto;
+  }
+
+  .student-modal__header,
+  .admin-modal__header {
+    padding: 1rem 1.25rem !important;
+  }
+
+  .student-modal__content,
+  .admin-form {
+    padding: 1.25rem 1rem !important;
+  }
+
+  .student-modal__footer,
+  .admin-modal__footer {
+    padding: 1rem 1.25rem !important;
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+  }
+
+  .student-modal__btn,
   .admin-modal__footer .admin-btn-primary,
   .admin-modal__footer .admin-btn-secondary {
-    width: 100%;
+    width: 100% !important;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
     justify-content: center;
     text-align: center;
   }
 }
 
-/* ─── Admin Queries ─────────────────────────── */
-@media (max-width: 768px) {
-  .admin-queries__header {
-    padding: 1.25rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
+@keyframes slideUpBottomSheet {
+  from {
+    transform: translateY(100%);
   }
-
-  .admin-queries__table th,
-  .admin-queries__table td {
-    padding: 0.875rem 1rem;
-    font-size: var(--text-xs);
-  }
-
-  .admin-queries__detail-body {
-    flex-direction: column;
-  }
-}
-
-/* ─── Admin Activity ────────────────────────── */
-@media (max-width: 640px) {
-  .activity-timeline::before {
-    left: 12px;
-  }
-
-  .activity-item {
-    padding-left: 2rem;
-  }
-
-  .activity-dot {
-    left: 6px;
-    width: 12px;
-    height: 12px;
-  }
-}
-
-/* ─── Admin Settings ────────────────────────── */
-@media (max-width: 640px) {
-  .settings-section {
-    padding: 1.25rem !important;
-  }
-
-  .settings-form-row {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ─── Student Home ──────────────────────────── */
-@media (max-width: 768px) {
-  .campus-pulse {
-    padding: var(--space-8) var(--space-5);
-    margin-bottom: var(--space-6);
-  }
-
-  .campus-pulse__title {
-    font-size: var(--text-2xl);
-  }
-
-  .campus-pulse__subtitle {
-    font-size: var(--text-sm);
-  }
-
-  .search-entry {
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-6);
-  }
-
-  .search-entry__discover {
-    width: 100%;
-    justify-content: center;
-    flex-shrink: unset;
-  }
-
-  .status-summary {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
-    margin-bottom: var(--space-8);
-  }
-
-  .status-card {
-    padding: var(--space-4);
-  }
-
-  .status-card__value {
-    font-size: var(--text-xl);
-  }
-
-  .events-list {
-    grid-template-columns: 1fr;
-  }
-
-  .feed-item {
-    padding: var(--space-4) var(--space-4);
-    gap: var(--space-3);
-  }
-
-  .feed-item__action {
-    display: none;
-  }
-
-  .urgent-banner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-4) var(--space-5);
-  }
-
-  .urgent-banner__action {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .campus-pulse {
-    padding: var(--space-6) var(--space-4);
-  }
-
-  .campus-pulse__title {
-    font-size: var(--text-xl);
-  }
-
-  .status-summary {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-2);
-  }
-
-  .status-card {
-    padding: var(--space-3) var(--space-3);
-  }
-
-  .status-card__label {
-    font-size: 0.65rem;
-  }
-
-  .status-card__value {
-    font-size: var(--text-lg);
-  }
-
-  .feed-item__title {
-    font-size: var(--text-base);
-  }
-
-  .search-entry__bar {
-    padding: var(--space-3) var(--space-4);
-  }
-}
-
-/* ─── Student Calendar ──────────────────────── */
-@media (max-width: 480px) {
-  .calendar-title {
-    font-size: var(--text-xl);
-  }
-
-  .calendar-controls {
-    padding: var(--space-3) var(--space-4);
-    gap: var(--space-3);
-  }
-
-  .calendar-nav .btn--secondary {
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--text-xs);
-  }
-
-  .calendar-current-month {
-    font-size: var(--text-base);
-  }
-}
-
-/* ─── Student Queries ───────────────────────── */
-@media (max-width: 768px) {
-  .student-queries__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-  }
-
-  .student-queries__form-card {
-    padding: 1.5rem 1.25rem;
-  }
-
-  .query-card {
-    padding: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .student-queries__form-card {
-    padding: 1.25rem 1rem;
-  }
-
-  .student-queries__title {
-    font-size: var(--text-xl);
-  }
-
-  .query-card {
-    padding: 1rem;
-  }
-}
-
-/* ─── Student Discover ──────────────────────── */
-@media (max-width: 768px) {
-  .student-discover {
-    padding: 1.5rem 0;
-  }
-
-  .discover-title {
-    font-size: var(--text-2xl);
-  }
-
-  .discover-filter-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-  }
-
-  .discover-results-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .discover-title {
-    font-size: var(--text-xl);
-  }
-
-  .discover-search-bar {
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-lg);
-  }
-}
-
-/* ─── Student Header (user badge) ───────────── */
-@media (max-width: 480px) {
-  .student-user-badge {
-    display: none;
-  }
-
-  .student-logout-btn span {
-    display: none;
-  }
-
-  .student-logout-btn {
-    padding: 0.4rem 0.6rem;
-  }
-
-  .student-header {
-    padding: 0 var(--space-3);
-  }
-}
-
-/* ─── Announcement Detail ───────────────────── */
-@media (max-width: 640px) {
-  .detail-page {
-    padding: var(--space-4) var(--space-3) !important;
-  }
-
-  .detail-page__title {
-    font-size: var(--text-xl) !important;
-  }
-
-  .detail-page__back-bar {
-    gap: var(--space-2);
-  }
-}
-
-/* ─── Announcement Modal ────────────────────── */
-@media (max-width: 480px) {
-  .student-modal {
-    padding: var(--space-3) !important;
-    align-items: flex-end !important;
-  }
-
-  .student-modal__content {
-    border-radius: 20px 20px 0 0 !important;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 1.5rem 1.25rem !important;
-  }
-}
-
-/* ─── AnnouncementModal & Overlay ───────────── */
-@media (max-width: 640px) {
-  .student-modal__close {
-    top: 12px !important;
-    right: 12px !important;
-  }
-}
-
-/* ─── Global table overflow ─────────────────── */
-@media (max-width: 768px) {
-  .admin-table-container {
-    border-radius: var(--radius-md);
-  }
-
-  /* Ensure tables scroll horizontally */
-  .admin-table-container,
-  .admin-queries__table-container {
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* ─── Prevent horizontal overflow on body ───── */
-@media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
+  to {
+    transform: translateY(0);
   }
 }
