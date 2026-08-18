@@ -281,15 +281,6 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-## 🔐 Default Seed Credentials
-
-After running `npm run db:seed`:
-
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Admin** | `admin@notifyhub` | `haneef5406` |
-| **Student** | `yash.kumar@notifyhub` | `yash123` |
-| **Student** | `pooja.sharma@notifyhub` | `sharma123` |
 
 ---
 
