@@ -27,7 +27,8 @@
 .logo-brand:hover .logo-icon-box {
   transform: scale(1.07) rotate(4deg);
 }
-.logo-svg { display: block; }
+.logo-svg, .logo-img { display: block; object-fit: contain; }
+
 
 /* --- Text Block --- */
 .logo-text-block {

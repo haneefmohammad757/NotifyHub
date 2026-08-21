@@ -40,6 +40,13 @@ const IconArrowRight = () => (
   </svg>
 );
 
+const IconUser = () => (
+  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" strokeLinecap="round" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
 const IconUserPlus = () => (
   <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
     <path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" strokeLinecap="round" />
@@ -318,8 +325,20 @@ export default function LoginPage({ isAdmin = false }) {
               </button>
             </form>
 
-            {/* Student Create Account Link */}
-            {!isAdmin && (
+            {/* Card Footer Actions */}
+            {isAdmin ? (
+              <div className="auth-card-footer">
+                <div className="auth-divider">
+                  <span className="divider-line"></span>
+                  <span className="divider-text">or</span>
+                  <span className="divider-line"></span>
+                </div>
+
+                <Link to="/login" className="auth-create-account-btn auth-student-redirect-btn">
+                  <IconUser /> Student Login
+                </Link>
+              </div>
+            ) : (
               <div className="auth-card-footer">
                 <div className="auth-divider">
                   <span className="divider-line"></span>

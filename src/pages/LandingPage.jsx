@@ -115,7 +115,7 @@ export default function LandingPage() {
           </div>
           
           <h1 className="hero-title">
-            Your Campus. Your Circulars. <br />
+            Our Campus. Our Circulars. <br />
             <span className="hero-gradient-text">Unified in Real-Time.</span>
           </h1>
 
